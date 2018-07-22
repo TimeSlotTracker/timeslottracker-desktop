@@ -6,7 +6,7 @@
     <name>TimeSlotTracker desktop version</name>
 
     <scm>
-        <developerConnection>scm:git:scm:ssh://git.code.sf.net/p/timeslottracker/app</developerConnection>
+        <developerConnection>scm:git:ssh://git.code.sf.net/p/timeslottracker/app</developerConnection>
     </scm>
 
     <properties>
