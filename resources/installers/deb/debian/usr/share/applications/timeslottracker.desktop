@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Categories=Utility;Office;Monitor;Java
+Name=TimeSlotTracker
+GenericName=Time Tracker
+Comment=Time tracking tool
+Exec=tst
+Icon=tst
+Terminal=false

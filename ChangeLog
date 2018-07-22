@@ -1,0 +1,1215 @@
+
+============================== version 1.3.11 ==============================
+
+2016-12-12  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: jira password: does not store password in config if did not set explicitly in config panel
+
+2016-12-09  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: jira support: removed issues cache (was no limit)
+
+2016-11-14  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: TimeSlotInputDialog autocomplete if combobox expanded (prototype)
+
+2016-08-22  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: TimeSlotTracker#debugLog now is fine level, was info level (jul)
+
+2016-08-19  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: ImportCsvDialog: fixed input file button
+	* Change: moved from csv4j to SimpleFlatMapper (sfm)
+	* Change: moved ant source-jar logic to maven
+	* Change: jgoodies libs updated to the last java6 versions
+
+2016-08-13  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: taskInfoPanel now has editable task's description tab with save button/Ctrl+Enter shortcut
+	* Change: renamed  *_en.properties files to *.properties for simplicity
+
+2016-08-06  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: moved ant logic (compile/package) to maven (added pom.xml)
+
+============================== version 1.3.1 ==============================
+
+2016-05-26  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: localizations for added memory/data save status field (toolbar)
+	* Change: toolbar: pause/stop actions does not depend on selected task
+
+2016-05-11  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: added memory/data save status field (toolbar)
+
+2016-05-10  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: rss url updated (used for version update)
+
+============================== version 1.3.0 ==============================
+
+2016-05-06  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: added jira6/7 support for add worklog method
+
+2016-04-09  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: jira version introduced
+
+2016-01-16  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: debian deps: added openjdk-8-jre
+
+2016-01-16  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: DaysTree/monthNode: show delta current-planned
+
+2016-01-07  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: #70 UAC for standard user not expected
+
+2016-01-03  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: debian package compatibility updates
+
+2016-01-02  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: Bug#80 Help > Check Updates > Error getting last version from sf.net
+
+2016-01-01  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Patch: #83 Always re-assigning new timeslot ID on XML load
+
+2015-05-09  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: Bug#81 Report Generation Error
+
+2015-04-11  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: RFE#93 Italian Translation (thanks to Giuseppe Morabito)
+
+2015-01-05  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: Bug#79 "My Tasks" Main Node - Disappearing Sub-Tasks
+
+============================== version 1.2.9 ==============================
+
+2014-08-30  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: RFE#92 Dependencies need to be updated (debian installer)
+
+2014-05-31  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: documentation url changes: to https://sourceforge.net/p/timeslottracker/wiki/Documentation/ (drop Trac support)
+
+2014-05-02  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: german translation updated (thanks to Jutta Albrecht)
+
+2014-04-25  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: restart timing action: simplified confidion's logic
+	* Change: restart timing action: user now can cancel restart timing if dialog (with time) occurs
+	* Change: start/pause/restart timing refactored: some regress from 2014-04-04, 2014-03-31 commits
+
+2014-04-05  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: added missing russian localization strings
+
+2014-04-04  Gerth Hermansson <ghermans@users.sourceforge.net>
+	* Change: Added in, User idle detection configuration, for if "Show dialog to set a custom time for restart of task after idle".
+	* Change: TimeSlotTracker_en.properties added label for configuration.
+	* Change: Configuration.java added constant for label
+	* Change: UserIdleDetectorConfigTab.java added checkbox for "Show dialog to set a custom time for restart of task after idle".
+	* Change: UserIdleDetector.java updated actionPerformed() method.
+	* Change: Starter.java modified method restartTiming to check if user has selected
+	          to have "Show dialog to set a custom time for restart of task after idle" shown
+	          in addition to the previously implemented "Show dialog to set a custom time for restart of task".
+	* Change: TimeSlotsInterface.java added new method getSelected() to be able to get the description of a non-active but selected
+	          TimeSlot (patch after noticing that restart timing from toolbar worked differently than restart timing from context menu).
+	* Change: Timeslots.java implemented new method getSelected().
+
+2014-03-31  Gerth Hermansson <ghermans@users.sourceforge.net>
+	* Change: Added customization for if "Show task has just started" message will be shown.
+	* Change: TimeSlotTracker_en.properties added label for configuration.
+	* Change: Configuration.java added constant for label
+	* Change: ConfirmationsTab.java added checkbox for "Show task has just started" message.
+	* Change: Starter.java modified method startTiming to check if user has selected
+	*         to have "Show task has just started" message to be shown.
+
+2014-03-30  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: RFE#88 Cloning of subtrees: refactoring: updating task model
+	* Change: TimeSlotRestartDialog remove unused logic
+	* Change: TimeSlotRestartDialog/TimeSlotInputDialog: start time field name now ending with : symbol
+	* Change: updated jgoodies looks to 2.6.0, jgoodies common to 1.8.0
+
+2014-03-28  Gerth Hermansson <ghermans@users.sourceforge.net>
+	* New: RFE#88 Cloning of subtrees
+	* New: Create new timeslot now have start date/time field
+	* New: New dialog for restart timing
+
+2014-03-24  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: RFE#91 Make "Create new time slot" dialog aware of hidden tasks
+
+2014-03-22  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Patch: Html: Project Tasks report (thanks to Gerth Hermansson)
+	* New: Added missing Mac OS X's icons
+
+2014-03-16  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Patch: Mac OS X's monochrome icons in System Tray (thanks to Gerth Hermansson)
+
+2014-03-09  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Patch: Weeks not sorted on week number" in "Task by days" view (thanks to Gerth Hermansson)
+
+2014-03-01  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: Bug#72 Popup current activity option not working
+
+2014-02-16  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: RFE#38 Purge old data, #90 Archiving functionality  - removing timeslots before given date 
+
+2014-01-26  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Patch: User inactivity detector with timeout, auto pause/restart active timeslot behavior (thanks to August Bering)
+
+2013-08-31  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Patch: #6: Allow Attributes to be autoadded to TimeSlots (thanks to Mark Fulbrook) 
+
+============================== version 1.2.8 ==============================
+
+2013-01-26  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: RFE# 3601343 JIRA issues not loading to the application (moved jira urls to properties)
+
+2012-11-17  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: RFE# 3587544 error occured while running this report
+
+2012-08-05  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: NPE in TodayTableModel#findTimeSlotValueWithDate method
+	* Change: today view dialog: reduced date's columns width
+
+2012-07-21  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: NPE while moving active timeslot: TimeSlotStartedInPeriod.java filter timeslots without task
+
+2012-06-03  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: daystree: worktime support (need holiday.properties file, format: yyyy-MM-dd=[0|8|7])
+	* Fix: RFE# 3476009 add new attribute dialog not opened
+
+2012-04-16  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: task edit dialog - setting insert position to first line
+
+============================== version 1.2.7 ==============================
+
+2012-01-09  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: Bug#3393705 Drag&drop timeslot moving stopped working - added in known issues
+	* Change: jgoodies looks updated
+
+2012-01-08  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: Bug#3397383 Jira worklog applied twice on *pause* and *save* in EditTimeSlotDialog" (1.2.6)  
+
+2011-09-09  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: Bug#3397383 Jira worklog applied twice on *stop* (1.2.6)  
+
+2011-08-14  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: about dialog/libraries - fixed russian localization  
+
+2011-08-13  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: timeslot's description history added with task's description strings (splitted by "\n")  
+
+2011-07-31  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: attribute types dialog - fixed to long russian localisation button texts 
+	* New: task add/edit dialog - description now is textarea
+	* New: xml saver - now saves newline as &#10;	
+
+============================== version 1.2.6 ==============================
+
+2011-04-25  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: regress from 2011-03-20 build: open files leak
+
+2011-03-20  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: xml data file: now checks last line marker as all data insurance 
+
+2011-02-27  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* manifest "created by" updated
+	* build.xml:
+		minor description changes
+		removed javac warning
+		added test target (run junit) and included in pack task
+		user parameters now in build.properties
+		added deploy task (scp)
+	* added IDEA project files
+	* deb: use release version from ant
+	* New: added file menu item - save data now
+
+2011-02-20  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: java7 startup blocker
+
+2011-02-13  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: XmlDataSource/XmlSave/TransactionalFileSaver huge code refactoring
+		. backup only if source file is non zero length
+		. do backup before save all action (was: 1 - save, 2 - backup)
+		. temp file restore - only if it's non zero file
+		. always shows data save errors 
+		. added new string for english/russian
+	* Fix: check version feature is back (was outdated rss link)
+
+2011-02-12  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: XmlDataSource small code refactoring 
+
+2011-02-05  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: RFE# 3064209: French translation
+
+2011-01-27  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: jgoodies looks upgraded to 2.4.0
+
+============================== version 1.2.5 ==============================
+
+2010-11-23  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: regress: TimeSlotDescriptionInputDialog is too big for long descriptions
+
+2010-11-21  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: timeslots: updates task's status after setting stop date for active timeslot
+	* Fix: tasktree: updates task's status after:
+		. restart another task when paused previous
+		. dnd cut timeslot operation
+	* Change: timeslot editDialog: separate title for create/edd timeslot
+	* Change: TimeSlotDescriptionInputDialog now uses AbstractSimplePanelDialog
+
+2010-11-20  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: Bug#3085539 delete active timeslot -> HMI hangs-up
+
+============================== version 1.2.4 ==============================
+
+2010-11-03  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: main frame: title updater: removed repaint method (probably reason for deadlock on X11)
+	* Change: logger level changed from ALL to WARNING (log files can be very large, if tst runs for a long time)
+
+2010-11-02  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: trayicon: rollback changes from 2010-10-31
+	* Fix: trayicon: show/hide: now correctly works according the setting "minimize to tray" 
+
+2010-10-31  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: trayicon: try to prevent deadlock in X11 (http://bugs.sun.com/view_bug.do?bug_id=6857363)
+
+2010-10-16  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: today view: dispose window after start/restart if setted "minimize after start"
+	* Change: trayicon: added setting icon/text in event disp.. thread (prevent deadlock in X11 - thanks to Victor Sidochenko)
+	* Change: trayicon: added showing task's name in message
+	* Fix: showing null application title - added more string empty value detection in configuration 
+
+2010-10-02  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: Bug#3076933 tray icon: not active just after loading
+	* New: RFE:3079233 Start/stop task by Spacebar also from Favorities list
+
+2010-09-25  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: RFE#3073808 jira: ask password once per session (if not setted in properties)
+	* Fix: Regress: unable to start task without trayicon
+
+2010-09-18  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: added commons-logging.properties (for explicit setting)
+	* Change: removed unneccesary console appenders from deb/exe logging.properties
+	* Fix: update tray icon after stopping paused timeslot
+	* Fix: toolbar now listens task changes
+
+2010-09-17  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: windows installer: switching from bat to application exe, app icons, installer usability, .tst directory in USER_HOME
+	* Change: icons renaming
+	* Fix: removed background from JIRA icon
+	* New: RFE#2865058 taskbar icon - active/inactive mode
+	* Fix: english resource spell error fixed 
+
+2010-09-12  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: system tray: can't show/hide application window, when "minimize to tray" option is not enabled
+	* Fix: nsis: fixed path to license file
+	* Change: ant: removed duplicated debian logic, added nsis task
+	* Change: nsis: hardcoded version removed from setup.nsi
+
+2010-08-15  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: task edit dialog: different titles for task's add/edit actions
+
+2010-07-11  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: Bug#2894749 minimize window to tray icon instead window closing (added enabled by default via config parameter)
+	* Change: added known issue about openjdk jre
+
+2010-06-26  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: Bug#2894749 minimize window to icon if setted in configuration
+	* Fix: Bug#2894749 tray: shortcuts fixed
+	* Change: russian resource minor fixes
+	* Change: debian: added alternative jre - openjdk-6-jre
+
+============================== version 1.2.3 ==============================
+
+2010-05-22  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: added license files for commons-*, ical4j libraries
+	* Change: added common and libraries tabs in AboutDialog (license info located in libraries tab)
+	* Change: updated jgoodies looks library to 2.3.1 
+
+2010-03-13  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: removed stale localizations strings
+	* Change: data import/export: added some russian localization
+
+2010-03-11  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: added unstable version nsis script (for windows exe installer)
+
+2010-03-09  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: data import/export: added menu icons
+	* Change: data import/export: added localization (for now only english/russian)
+
+2010-02-12  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: Bug# 2947811 Unable to stop a task (NPE for lucene update procedure for null values in attributes)
+	* New: csv import: added encoding field
+
+2010-01-22  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: ical export: file export name now saved in properties
+	* Fix: ical export: now saves the whole task's subtree
+
+2009-12-13  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: csv import logic reimplemented. added properties: first row number, delimiter 
+
+2009-12-12  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: csv import/ical export added. work in progress.
+
+2009-11-05  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: Bug# 2889781 Invalid timeslottracker.desktop in .deb
+	* Fix: Bug# 2891105 update external documentation link in tst
+
+2009-09-27  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: added file menu with items: new task, quit
+	* Change: created package gui.actions, introduced the only class for AddTask Action
+
+2009-09-20  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: build.xml clean target now deletes deb package tmp directory
+
+============================== version 1.2.2 ==============================
+
+2009-09-19  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: Bug# 2860252: Escape on Delete task confirmation deletes the task
+	* Change: added release notes template (./resources/for-release directory)
+	* Fix: debian installer: fixed icons directories
+
+2009-08-22  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: BuildInData: registering types moved from types to BuildInData class cause ClassLoader does't load some attribute types classes while starting
+	* Change: BuildInData -> AttributeTypesManager which manages all attribute types
+	* Change: added flag builtin in AttributeType
+	* Change: AttributesWindow renamed to AttributeTypesWindow
+	* Fix: TimeSlotChangeListener now has correct comment "not change selection but changed timeslot", moved to net.sf.timeslottracker.data package
+	* Change: imports optimized on all classes
+	* Change: net.sf.timeslottracker.net -> net.sf.timeslottracker.updateversion
+
+2009-08-22  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: added russian strings for monitoring support
+	* Change: removed saving (in xml) AttributeType for IssueTracker cause using BuildInData class 
+
+2009-08-21  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: RFE #2802994: Put time in task to table - partly done: button changed with clickable labels
+
+2009-08-19  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* Fix: Application freezes (stops on data loading) and if not killed before 30 secs - saves it's data, so in next start data must be taken from backup.
+	* New: Added BuiltInData class for registering global (built-in) data (now attributeTypes), used automatically in TST
+	       (if not registered but used then TST is not loading next time).
+	* Fix: IssueKeyAttributeType is registered into BuiltInData store, because it's added automatically and user doesn't have to add this attribute
+	* New: Added configuration for mac style shortcuts, even on other platform (for users using TST both on mac and other platform)
+	* New: Added Monitoring support with screenshots (based on potrex's patch 2545808)
+	* Removed: Current monitoring with question for starting new timeslot
+
+2009-08-14  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* Fix: trayIcon popup menu on Mac OS X - ctrl+click for show/hide and shift+ctrl+click for change task
+	* New: Added configuration for mac style shortcuts, even on other platform (for users using TST both on mac and other platform)
+
+2009-08-13  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: Bug #2836786: Toolbar has size 0,0 when floating and unable to resize. - Gerth Hermansson ( ghermans ) patch
+
+2009-08-12  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: task tree view switcher: added combobox in days/task tree
+
+2009-08-06  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: util classes refactored
+
+2009-08-05  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: renamed filterDataDialog.* -> dateperiod.*
+	* Change: formatting in CS, EN localizations
+	* Change: first run: removed dialog with "no config file message", updated localizations - Jan Vlčinský request
+	* Fix: first run: added setting backup directory (in Configuration) after it's evaluated - Jan Vlčinský request
+	* Fix: taskinfo panel: attributes tab: title is updated after attribute list updates
+	* New: search panel: adding suffix "*" if search text does't contain space
+	* New: switch task view action added in view menu
+
+2009-08-05  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* New: updated polish localization
+	* New: added some mac-style compatibility
+
+2009-08-04  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: reports filter's classes moved to reports.filters package
+	* Change: about dialog: remove unnecessary texts, added russian strings for JIRA license
+	* Change: reports filter: getLabel() and getGUIComponent() replaced with new interface method DialogPanelUpdater#update(DialogPanel)
+	* Change: TimeSlotFilterData renamed to DatePeriod
+	* Change: package net.sf.timeslottracker.gui.common renamed to net.sf.timeslottracker.gui.taskmodel
+	* Change: DatePeriod and helper classes moved to net.sf.timeslottracker.gui.dateperiod package
+	* Change: introduced new class DatePeriodPanel from TimeSlotFilterDialog
+	* New: report start/stop date filters merged into one datefilter which uses dateperiod panel
+	* New: added Czech translation. Thanks Jan Vlčinský
+	* New: taskinfo panel: attributes tab: added attribute's counter (example: Attributes (2))
+	* Fix: NPE in DateFilter
+	* Fix: DatePeriodPanel: fixed handling user's input errors
+	* Fix: ReportConfiguration: fixed handling user's input errors
+
+2009-08-03  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: timeslotfilter: task duration was not filtered
+	* Fix: debug log "starter.title.timer.update.name" does not contains timeout value
+	* Change: TimeSlotFilterData refactored - introduced enums, related logic moved to TimeSlotFilterData 
+
+2009-08-02  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: RFE #1790273: Toolbar with common functions: added new task - based on patch Gerth Hermansson ( ghermans )
+
+2009-07-31  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: RFE #1790273: Toolbar with common functions: added start/stop/pause/restart task - based on patch Gerth Hermansson ( ghermans )
+
+2009-07-28  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: Bug #2827865 - based on patch Gerth Hermansson ( ghermans )
+	* Fix: spelling error in tasktime panel - based on patch Gerth Hermansson ( ghermans )
+
+2009-07-20  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: LayoutManager: fixed getting/putting listener behavior
+
+2009-07-19  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: LayoutManager: listeners logic refactored
+
+2009-07-14  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: keystore location moved from jnlp folder to trunk
+
+============================== version 1.2.1 ==============================
+
+2009-07-13  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: build.xml: added sign jar task, build deb in release target
+
+2009-07-11  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: timeslots popup menu: split timeslot: shotcut was broken
+	* Change: simplified logic in TimeSlotSplitDialog - based on patch Gerth Hermansson ( ghermans )
+	* Change: TimeSlotFilterDialog and TimeSlotFilterData now have more javadocs
+
+2009-07-10  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: added russian strings for Split timeslot dialog
+
+2009-07-09  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: RFE #2819009: Split timeslot into two consecutive timeslots - thanks for patch Gerth Hermansson ( ghermans )
+
+2009-07-08  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: Bug #2818311: add new issue from JIRA: thread issue
+
+2009-07-07  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: JIRA tracker: broken parsing issues from xml 
+	* Fix: add JIRA issue dialog: added l10n strings for apply button
+	* Fix: add JIRA issue dialog: clears list if no suitable issue of given text
+
+2009-07-06  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Done RFE #2816887 Time in task duration optionally shown in format hh:mm - thanks for patch Gerth Hermansson ( ghermans )
+	* Done RFE #2816895 Task duration summary "tasks by days" view - thanks for patch Gerth Hermansson ( ghermans )
+	* Fix: add JIRA issue dialog: broken selecting issue in list
+
+2009-07-05  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: debian package: added menu item and icon
+	* Change: add JIRA issue dialog: added russian strings
+
+2009-07-04  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: add JIRA issue dialog: autoselect issue while entering text
+	* New: add JIRA issue dialog: load issues in separate thread
+	* Change: add JIRA issue dialog: apply button now is default
+	* Change: AbstractSimplePanelDialog now has configurable default button 
+
+2009-06-24  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: add JIRA issue dialog: fixed dialog size
+
+2009-06-21  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: added fugue icons http://www.pinvoke.com/. License: Creative Commons Attribution 3.0 license. http://creativecommons.org/licenses/by/3.0/. Sun icons removed.
+	* New: introduced icons manager with icons cache
+	* New: JIRA: added filter support - work in progress
+	* Change: added icons in today dialog
+
+2009-06-16  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Done RFE #2362029: make deb package for application - added deb_helper scripts for debian package (installers/deb)
+	* New: added prop.directory system property for setting property directory for application (optional)
+	* Change: some installers scripts refactoring
+	* Fix: today dialog: fixed NPE when timeslot's start > end
+
+2009-06-06  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: moved time related logic from DateFilter to TimeUtils
+	* Change: TaskTimePanelConfigDialog now resizable
+	* New: added for testing jnlp (resources/installers/timeslottracker.jnlp)
+	* New: added "now" button in timeslot's filter dialog
+	* New: added scripts for creating keys/signing jar
+
+============================== version 1.2.0 ==============================
+
+2009-05-23  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: partly added RFE #1185191: Timing mechanizm - Based on patch #2545808 from portlex - popup dialog every N minutes
+	* New: jgoodies look'n'feel is default
+	* Fix: minor spell error in sample xml data file
+	* Fix: Bug #2793615 tst does not update work log only add new entries: now after edit timeslot, tst creates new worklog only for delta (if duration increased), and nothing if reduced.  
+	* Change: added metal look'n'feel bug #2792795 and bug #1721630 in KnownIssues file
+	* Change: jira -> JIRA, added trademark info in about dialog
+	* Change: configuration/view: added label "Windows only" for JGoodies WindowsL'n'F
+	* Change: reordered configuration group items
+
+2009-05-16  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: added svn keywords for all java classes
+	* Fix: data's filter: last week/month/year period now calculated just before use
+	* Fix: data's filter: taskinfo panel now filter duration according timeslot filter
+	* Fix: data's filter: added filter's info in application title
+	* Fix: JIRA support: add new issue task dialog: empty key is not error any more (just cancel operation)
+	* Fix: Bug #2778544: Attributes are not displayed in timeslots
+	* Fix: TimeUtils now uses first day of week from properties
+	* New: today view: updating start/end times for timeslot also update previous/next timeslot accordingly
+	* New: today view: added restart action
+
+2009-05-15  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: today view: added duration
+	* New: added auto saving width and height for AbstractSimplePanelDialog in properties: today, changelog, knownissues, ...
+	* Change: CalendarUtils renamed to TimeUtils
+	* Change: getTime logic moved from XmlTimeSlot to TimeUtils 
+
+2009-05-01  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: jgoodies looks library now is part of application
+	* New: added licence files for: apache lucene, jgoodies looks (see About dialog)
+	* New: added jar compression level (needs ant 1.7+)
+
+2009-04-20  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Done RFE #1429003 Data's filter (added timeslot filter dialog)
+	* Fix: CalendarUtils: invalid maximum calendar constants
+
+2009-03-08  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: timeslot's different translations fixed in russian resource   
+
+2009-01-31  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: added label about creating new tasks in timeslot's creation dialog
+
+2009-01-25  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: Bug: NPE when tst starts - timeslots table sorter broken
+
+2009-01-11  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: Bug #2498772: timeslot operations is broken in trunk
+
+2009-01-08  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: timeslots table now uses tablesorter from standard java api
+
+2009-01-07  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: new timeslot dialog: shows parent's name with selected task
+	* New: report configuration dialog saves it's location in properties
+	* New: report configuration dialog uses combobox for charset
+	* New: task by days: timeslots title now depends on selected tree node
+	* Fix: today view: removes timeslot after it's editing with started date != today 
+
+2008-11-23  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: added today view (windows/today): not finished, in progress
+	* Change: added russian strings for tray icon menu
+
+2008-11-16  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: XmlTimeSlot now has persistent timeslotId
+	* New: trayicon now has popup menu: switch task, hide/show, exit (localization strings will be added soon)
+	* New: TimeSlotDescriptionInputDialog now support ins and alt+ins keys for add new task/add task from issue tracker. previously selected task used as parent task 
+	* Change: from XmlTask extracted logic into new UniqueNumberSequence class
+	* Change: XmlSave optimized output xml: if there is no any attribute in timeslot it saves with <timeslot/> 
+
+2008-11-13  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: Bug: updating JIRA worklog for timeslot change with startDate = current time, now it uses timeslot.startDate
+	* Fix: Bug: trim JIRA issue key when creating new task for issue 
+
+2008-11-11  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: Bug #2252300: task: if start new, it's not started
+	* Change: TimeslotDescriptionDialog: removed auto selection for description field when task is changed
+	* Change: simplified russian string for custom.show.message.after.cancel.task 
+	* New: added new configuration parameter - minimize main window to tray (default: true)
+
+2008-11-10  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: TrayIconManagerImp: simplified logic; added starting timing without active timeslot
+
+2008-11-09  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Done RFE #2200056: JIRA support: add command to open issue's uri in browser
+	* New: added russian tips of day
+	* New: added missing russian strings for tray icon features
+	* New: added three tips on english/russian
+	* New: added feature to change task while creating new timeslot. After changing task, description history updates. Useful in changing via tray icon and upcoming today view
+	* Fix: Bug #2112137 Multiple Monitor Issues
+	* Change: adding JIRA task moved from Ctrl+Ins to Alt+Ins
+	* Change: tasktree popup menu: issue tracker actions moved to it's own submenu
+
+2008-10-31  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* Change: Minimizes the app into the tray icon only if user set this to true in Configuration
+	* Change: Move the tips of the day into new localized property file: tipOfTheDay_xx.properties
+	* New: added some new tips of the day
+	* Change: Tip Of The Day now changes it settings after configuration change
+
+2008-10-30  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* New: Done RFE #1431501 Minimize to tray (by clicking left mouse button)
+	* New: Added Tip Of The Day service - ballons with tips & tricks
+	* New: Quick change running task by CTRL+left mouse button on tray icon
+	* New: message from tray icon after task starting
+	* Change: changed tray icon for 24x24
+
+2008-10-29  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* Fix: Polish localization of clone timeslot (Klonuj zaznaczony odcinek czasu)
+	* Fix: Bug #2149472 Multi-select of timeslots not useful
+	* Fix: 2208015 Bug during deleting timeslot
+
+2008-10-29  Bartlomiej Marciniak <qqbart@users.sourceforge.net>
+	* Fix: Trying to do backup even if there is no backup configuration
+
+2008-10-27  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* New: German localization (thanks to: Peter Roosen)
+
+============================== version 1.1.7 ==============================
+
+2008-09-22  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* Fix: Bug #2121321 search: update task: cache does not sync
+	* Fix: Bug #2121310 search . search results . no description
+	* New: Added TextAreaRenderer for multiline rows in table
+
+2008-09-13  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Done RFE #2041002 task tree: add shortcuts for move up/down task. Shift+Up/Down
+	* Done RFE #2094234 task tree: add shortcut Ctrl+Ins to insert JIRA task
+	* Done RFE #2107785 Stop hot-key missing from Task timeslots grid
+	* Change: JIRATracker now uses thread pool for communication with JIRA (no more new threads)
+
+2008-09-05  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: Added missing properties in Russian for search feature
+
+2008-09-03  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* New: Added advanced full text search with result window
+
+2008-08-30  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* New: Added missing properties in Polish for last added strings
+	* Change: Making the shortcut for (un)hidding working not only for CTRL+H
+	* Change: Reformat TaskTree to make it more developer friendly
+
+2008-08-24  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: remove unused filter class TaskChildrenFilter
+
+2008-08-21  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: added new txt report by months
+	* New: txt report by days: added total time for day
+
+2008-08-15  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fixed bug #2026859: JIRA support: does not create worklog with JIRA => 3.11
+	* Change: configuration/JIRA url now may ends (or not) with / 
+
+============================== version 1.1.5 ==============================
+
+2008-04-26  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fixed bug: copying TimeSlot does not copying it's attributes collection
+	* Fixed bug: prevents recursive copying task
+	* New: allowed copying the task to the same task
+	* Change: TimeSlot.setAttributes() now uses clear/addAll methods on internal collection (was resetting collection)
+	* Change: FileUtils class moved to net.sf.timeslottracker.utils package
+
+2008-04-25  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fixed bug #1949382: days tree : select current day does not work
+	* Fixed bug in CalendarUtils: wrong using of Calendar.HOUR constant
+	* Fixed bug in TimeSlotByDateFilter: NPE on paused timeslot
+	* Done RFE #1719208: Task tree handling. copy task
+	* New: root node can't be hidden
+	* New: Task now has isRoot method
+	* Change: refactored logic to find node in jtree
+	* Change: package net.sf.timeslottracker.data.filters renamed to net.sf.timeslottracker.filters
+	* Change: refactoring of filters
+	* Change: "task by days" removed timeslots popup menu
+
+2008-04-19  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: tasksByDays tree now has it's own interface and listener
+	* Change: timeslots now listens tasksByDays listener
+	* New: "task by days" view selects current day when opening/refreshing 
+	* New: "task by days" view has it's own view menu with action update
+	* New: "task by days" view sets taskinfo panel invisible  
+
+2008-04-13  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: main window saving location logic moved to SwingUtils, removed APP_WINDOW_LOCATION_* properties
+	* New: added saving location for dialogs: new/edit timeslot, new/edit task     
+
+2008-04-07  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: main menu - item "show hide tasks" - simplified item's text logics  
+
+2008-04-01  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fixed bug #1932315: NPE after insert new task
+
+2008-03-30  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fixed bug #1927845: removed auto update (on timeslot changes) for "task by days" view. Now it's updated when opens.
+	* New: main submenu "view" now customizable for views: task tree and task by days
+	* New: added hidden flag in TaskEditDialog
+	* New: added checkbox and changeable text for "view/showHiddenTasks" menuitem
+	* New: added saving "showHiddenTasks" flag in properties 
+	* Change: refactored node update logic in task tree
+
+2008-03-29  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fixed bug: some icon's paths in help menu
+	* New: task tree preserves selected node after hide/unhide node action
+	* New: changing show/hide hidden task option preserve selected node in task tree
+	* New: task tree popup menu option is "Hide selected task" for not hidden, and "Show hidden task" for task which is hidden    
+	* Change: task tree popup menu - hide action - changed location, removed icon, changed shortcut Ctrl + H
+	* Change: moved minimize window just after entering new timeslot description
+
+2008-03-25  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* Change: make dtd more strict for boolean values (allows only "true" or "false")
+
+2008-03-23  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: added russian strings for backup logic and configuration window
+	* New: data's filter - hide task:
+		. added hidden flag to task (timeslottracker.dtd was changed)
+		. added show/don't show hidden tasks in main submenu "view"
+		. added task's tree popup menu item: hide/unhide selected task with shortcut Ctrl + Del
+		. change task tree renderer to show hidden tasks
+	* New: added storing application window location in properties file
+	* New: added copying attributes in copy task action (partly RFE #1719208 Task tree handling. copy task)
+	* New: added icons for help menu items
+
+2008-03-22  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* Fixed bug: 1908829 Backup is not done under a non existent dir (added backup during configuration as well checking during making backup)
+	* New: added method to TimeSlotTracker interface: setClosing(boolean) and isClosing() to check if the application is closing
+	* New: added method verify() to ConfigurationPanel to give the ability to check if configuration on this tab is valid.
+	* Optimize import to: [java.*] [blank line] [javax.*] [blank line] [other imports], and to use single class import
+
+2008-02-29  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fixed bug: data source error after moving active timeslots
+	* Fixed bug: does not copying timeslots while dnd action
+
+2008-02-12  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fixed bug: "Show information message after cancel task starting" option does not work with setted "Confirm switching task" option
+	* Fixed bug: tst allows create timeslot for root node while throw error with next datasource reloading  
+	* Look and Feel logics moved to new LookAndFeelManagerImpl
+	* LayoutManager now does not fire ACTION_CONFIGURATION_CHANGED action while reloading data
+	* TimeslotsTableModel now listens DataLoadedListener instead ACTION_CONFIGURATION_CHANGED action
+
+2008-02-10  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* Fix: Removing import of no more existing class [ChangelogDialog] in MainMenuBar.java - error when compiling
+	* Added some strings in Polish
+
+2008-02-10  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Some refactoring in tray icon logics
+	* Added option in configuration/customization: Show information message after cancel task starting
+	* timeslots table: returned multiple selection, added support multiple selection to DnD actions (copy/move)
+	* Added help item - known issues
+	* Added new class dialog: FileContentDialog 
+
+2008-02-09  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* Fix: preventing creating tray icon when not supported
+	* Change: set the tray Icon to auto resize
+
+2008-01-29  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* Added polish string for tray icon and checking for new version
+
+2008-02-02  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* timeslots table - added shortcuts:
+		. support context menu key
+		. space - start timing
+	* Done RFE #1393272 A way to check if a new version is available 
+
+2008-01-29  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* Fixed bug #1882075 Wrong method of checking if new version is available
+
+============================== version 1.1.1 ==============================
+
+2008-01-29  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* fixed bug #1882039 Instance checking does not work anymore
+
+2008-01-28  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* task tree:
+		added Shift + Space shortcut for restart active selected task
+		added context menu key support
+	* help menu (minor): added separators
+	* added russian strings for create report item in task tree popup menu
+	* timeslot table: added shortcuts
+		F2 - opens edit dialog for selected timeslot
+		Ins - opens new timeslot dialog.
+		Del - deletes selected timeslot.
+	* JIRA support: fixed NPE while removing timeslot for JIRA task
+	
+2008-01-25  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* done RFE #1390840 Choosing starting node while reporting
+	* refactoring in Filter classes to specify the collection class
+
+2008-01-13  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* added russian strings for #RFE 1393272 - A way to check if a new version is available
+
+2008-01-13  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* added polish strings for #RFE 1393272 - A way to check if a new version is available
+	* added new method AbstractSimplePanelDialog.textArea with control of more attributes
+	* changing the ChangelogDialog not to auto line wrap
+
+2008-01-13  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* added help menu item to check updates (#RFE 1393272 - A way to check if a new version is available)
+	* refactoring: added common AbstractSimplePanelDialog, moved logic from Utils to SwingUtils class
+	* JIRA support: added message when issue number is not valid, JIRATracker class - removed method postInit      	
+
+============================== version 1.1.0 ==============================
+
+2008-01-10  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* added help menu item to open documentation page on sf.net
+
+2008-01-09  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* task tree: Space shortcut: fixed useless stopping active timeslot if user cancels start task
+	* added localized strings in russian for RFE #1475587
+
+2008-01-08  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* added localized strings in russian for RFE #1808266
+
+2008-01-07  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* done RFE #1475587 TimeFormat filter (1h:30m == 1,50h)
+
+2008-01-07  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* done RFE #1790276 Larger create new timeslot dialog.
+	* done RFE #1790277 Timeslot header width
+
+2008-01-06  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* done RFE #1808266 Change data source search path - looking for file also in current folder, and special option in Configuration
+
+2008-01-05  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* added localized strings in polish
+	* added accelerators for new shortcuts in task tree
+	* small refactoring not to use unnecessary array in TreePopupMenu class
+
+2008-01-05  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* task tree: Space shortcut: added auto start selected task (after stop active) if it is not active 
+
+2007-12-22  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* instance checking: timeslottracker.lock is stored in user temp dir and deletes after application shutdown
+	* task tree by days: added week node 
+
+2007-11-29  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* fixed some spell errors in English localization
+	* added new parameters in application title: %elapsedToday, %plannedToday, %remainToday
+	* task tree by days: added elapsed time for nodes - year, month, day
+	* task tree: added shortcuts
+		F2 - opens edit dialog for selected task.
+		Ins - opens new task dialog.
+		Space - start/stop selected task.
+		Del - deletes selected task.
+
+2007-10-18  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* fixed russian localization strings for date formats
+	* done RFE #1769838 Search tasks: added search feature in tasktree. Just enter text and press Enter. Next occurrence - enter again.
+	* done RFE #1420627 Instance checking
+	* done RFE #1790284 Only allow one instance
+
+2007-10-14  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* timeslot edit dialog now resizable and has not fixed window size
+	* added new task icons
+
+2007-09-04  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* added prototype of task tree by days - work is not complete
+
+============================== version 1.0.3 ==============================
+
+2007-07-09  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* added localized strings in russian: Timesheet table with description
+
+2007-07-08  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* added new report - Timesheet table with description
+	* added support for reporting timeslots with duration == 0 seconds
+	* added filter DateColumnLookFilter to CustomReport
+	* fixed bug: #1506103: manually ending a time slot does not work correctly
+
+2007-07-03  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* fixed bug: new task (after copy action) in task tree had same node
+
+2007-07-02  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* fixed bug: popup menu for pasting task in task tree now displays in right place
+
+2007-07-01  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* added localized strings in polish
+
+2007-06-30  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* changes RFE 1719208: added task copy action (without children)
+
+2007-06-25  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* task d'n'd: "cancel" action in popup menu now clear clipboard and reset dnd action
+
+============================== version 1.0.2 ==============================
+
+2007-06-23  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* added localized strings in polish
+
+2007-06-23  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* fixed bug 1721628: Loosing properties after closing OS with active TST 
+		implements psevdo transactional file save behavior
+	* changed build.xml: renamed and changed copy_extra_files target
+	* added changelog item to Help menu
+
+2007-06-06  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* added trim operation for process task name and timeslot description
+
+2007-06-03  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* fixed icons format error
+
+2007-06-01  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* made the about dialog a little bigger to accomodate icon
+	* added auto open just generated report in ReportConfiguration
+
+2007-05-30  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* added logo in About dialog: thanks to Christine Neubauer (RFE: 1610142) 
+	* added link to homepage in About dialog
+	* removed usages of deprecated features
+	* removed knownissues for previous java release (before 1.6)
+
+2007-05-29  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* added auto opening generated report
+
+============================== version 1.0.1 ==============================
+
+2007-05-28  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* fixed bug: does not fire event TimeSlotChanges when starting task just after stops another
+
+2007-05-27  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* added Customization Tan in Configuration 
+	* added option to Customization Tab: minimize window just after start task
+	* fixed bug: remains task's timeslots in table after it's removed
+	* removed some dublicates in DnD handlers 
+	* some minor improvements in russian translations 
+
+2007-05-25  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* removed redundant word "selected" from russian strings in tasktree and timeslot menus (reason: too wide menus)
+	* added JIRA task icon
+	* added validating rule for JIRA issue key
+
+2007-05-23  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* fixed bug 1721628: Loosing properties after closing OS with active TST 
+		. added saving xml and properties file with two steps: saving data to tempfile then renaming tempfile to file
+
+2007-04-30  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* added starting/restarting active task (now you don't need stop and start task if you want start new timeslot on the same task)
+	* added predefined jgoodies/winLAF look and feels in configuration view tab (shows only when corresponding class exist in classpath)
+	* added first version of JIRA support:
+		. connection properties in configuration JIRA tab (caution: password saved as is)
+		. FEAT: getting task by issue key
+		. FEAT: save duration in issue worklog when stop timeslot
+		. FEAT: update duration (only upward) in issue worklog when edit timeslot
+	* changed events: now TimeSlotChange event throws always when timeslot changes
+	* changed build.xml: now all classes and resources compiled in deploy/classes folder (reason: easy IDE integration)
+
+============================== version 1.0 ================================
+
+2007-04-17  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* added russian string for quit
+	* added description of bug "local letters in path to xml file" in KnowIssues 
+
+2007-04-17  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* fixed configuration splitting - showing the tree with options
+	* change the order of developers - we are using natural language sorting order :)
+	* added polish localizations for Andrei's great modifications
+	* added the Quit option in menubar
+
+2007-04-14  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* added edit task by double click on it in tree task
+	* changed configuration panel view: now it's tree
+
+2007-04-08  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* fixed bug: while starting paused timeslot you could not use new description (if you enter it)
+
+2007-04-07  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* changed starting new timeslot while active one (previous):
+		previous timeslot ends only after user inserts valid description for new timeslot and confirms it
+		if user, at first, chooses to stop previous timeslot and then chooses to cancel input description for new timeslot, previous timeslot does not stops and user recieves message about it
+	* added possibility to copy selected timeslot as string to another program
+	* added possibility to copy selected task as string to another program (using cut task action, copy task not yet implemented)
+	* added possibility to paste new task from clipboard string
+	* added check for empty name in task edit dialog
+	* added new option in configuration (general tab): first day of week
+
+2007-04-01  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* added title's template: default and for active task. There are some parameters to show (see configuration)
+	* changed configuration: by default data backup is on
+	* added confirmation tab in configuration: Confirm switching task
+	* added auto saving window size, width/height removed from configuration window
+	* added look and feel support. See Configuration/View 
+	* changed showing style for favourite task: blue color replaced with asterisk (straight setting color in some Look'Ang'Feels looks ugly)
+
+2007-03-24  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* fixed bug: Loosing data xml after reading xml with error (for example: "dtd not found")
+
+2007-03-18  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* done RFE #1482132: New report - Timesheet in cvs format
+	* added reports: detail (by task) in TXT form, journal (by days) in TXT form 
+
+2007-03-17  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* added input description dialog with description's history for timeslot edit dialog 
+
+2007-03-10  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* changes RFE #1410542: Drag and Drop: 
+		added popup menu for task tree for choosing action: insert before task, insert after, paste as child, cancel
+
+2007-02-17  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* fixed bug #1600218: Some dialogs does not have root component
+
+2007-02-16  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* added initial version of RFE #1410542: Drag and Drop: 
+		moving (default mouse gesture)/reordering (mouse gesture with Alt) tasks, moving/copying timeslots. 
+		keyboard Copy/Cut/Paste support for task and timeslots
+
+2007-02-05  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* added attributes.category.RealAttribute.name property in Polish
+
+2007-02-03  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* done RFE #1537788: Floating point attributes
+	* fixed bug #1476090: lock on new files
+
+2007-01-06  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* changed input description dialog to static combo box height and a little wider
+	* fixed above input description dialog to nice close on cancel button action
+	* fixed bug #1625644: Missing localized string in a polish: 7
+
+2007-01-05  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* added input description dialog with description's history for new timeslot
+	* fixed bug #1467174: Sorting in Description in TimeSlots table is case-sensitive
+
+2007-01-01  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* added updatable active timeslot duration into application title (update period added as config params, update thread's name - as localized string)
+
+2006-12-26  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* done Patch #1608353: dtd.directory environment setting to move the dtd file
+	* done Patch #1600205 (by cnitsa - thanks!) - completed the Russian strings
+	* done RFE #1520978 (by cnitsa/zgibek): Add output file encoding field to custom (user) report
+
+2006-05-02  Bartlomiej Marciniak <qqbart@users.sourceforge.net>
+	* done RFE # 1425046:  Add task's attribute to task panel
+
+============================== version 0.8 ================================
+
+2006-04-07  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* done RFE #1464499: Remember the timeslots column sorting
+
+2006-04-05  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* done RFE #1464499: Remember the timeslots column sorting
+	* done RFE #1380815: Remembering the column order
+	* changed logging in XmlDataSource and Configuration classes
+
+2006-04-04  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* RFE #1313915: Changed formating of selected week and month
+
+2006-03-21  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* done RFE #1410539: Backup data. (on startup and on shutdown options)
+	* done RFE #1362363: LOV in attributes
+
+2006-03-20  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* improvments in report buildings
+	* done RFE #1449506: new report transofmation (report)
+	* added ability to choose the date-column format and stores last chosen value
+
+2006-03-19  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* fixed bug #1453665: Calendar does not work when day not changed
+	* done RFE #1390848: Add calendar icon to report window
+	* improved preparing data for xslt translation (exporting only tasks that matches filters)
+	* fixed bug #1453721: Activity not included in report when not between rep. dates
+	* done RFE #1421311: Restart timing in favourites panel (for favourites)
+	* done RFE #1421311: Restart timing in favourites panel (for task tree)
+	* added new attributes to prepared xml file (for xsl transformations): weekOfYear, weekOfMonth, dayOfWeek (starting MONDAY=1, ..., SUNDAY=7)
+	* added new attributes to prepared xml file (for xsl transformations): dayOfYear and dayByDayLoop element for enumarting days
+	* added two auto parameters: startDayOfYear and stopDayOfYear when used start and stop dates
+	* added new attribute to prepared xml file (for xsl transformations): date (yyyy-MM-dd)
+
+2006-03-18  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* done RFE #1313915: Chosing day, week and month in task info panel.
+	  (just use calendar icon in task info before time summing panel)
+
+2006-03-17  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* done RFE #1448350: Remember XML settings in HTML Summary Report
+	* fixed bug #1401171: Calendar does not work when no date preselected
+	* added "all" label into time panel inside TaskInfo (upper right panel)
+
+============================== version 0.7 ================================
+
+2005-12-26  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* done RFE #1362366: Sorting in timeslots table
+
+2005-12-26  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* done RFE #1380813: Remembering the split bars positions
+	* done RFE #1362367: Show attributes in timeslots table
+	* done RFE #1185202: debug/error-Log implementation
+	* merged with branch TODO_1185197: callendar object in DateTimeEditPanel
+
+
+2005-12-14  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* changed button string from "Cancel" to "Close" in attribute's configuration window.
+
+2005-12-13  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* done RFE #1378397: Ability to "hide" attributes on reports
+
+2005-11-15  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* changing selecting app's locale from JTextField to JComboBox to show all possibles
+
+2005-11-07  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* fixed bug #1350402: (0.65) Reserved char in task name crashes the system
+
+2005-10-31  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* fixed bug with opening application - positioning it.
+	* changed journal.xml xslt template - added "width" attributes to table
+
+============================== version 0.65 ================================
+
+2005-10-30  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* added new - Russian - language, thanks to Andrew (zoer)
+	* done RFE #1340407: Choosing character encoding in csv reports
+	* fixed bug in cvs report - duplicating records.
+	* done RFE #1245067: new view. - realized as a Journal Report
+	* done RFE #1340406: New csv report - day by day - CVS Journal Report
+	* added some icons to dialog windows
+
+============================== version 0.6  =================================
+
+2005-09-21  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* done BUG #1282542: Data not saved while system shutdown
+
+2005-09-21  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* done RFE #1281912: more informations in "Selected task's information"
+	* changed the popup menus fonts to plain ones
+
+2005-09-04  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* done RFE #1234716: Moving timeslot from one task to another one
+
+============================== version 0.5.1 =================================
+
+2005-07-25  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* added CheckBoxAttribue category
+
+2005-08-15  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* added exporting the added attributes to exported file during reporting. It's possible now to use them in your reports.
+	* added sample of using attributes in detail and summary reports. All given attributes are now included in this reports.
+
+============================== version 0.5 RC ================================
+
+2005-07-22  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* merged with branch RFE_1187122 - implementing the attributes for task and timeslots
+	* done RFE #1232671 - Possibility of running more then one instance of TsT
+
+2005-07-05  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* fixed bug #1232665: configuration.get.error not definied
+
+============================== version 0.4 =================================
+
+2005-06-30  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* added footer to summary and detail reports
+	* fixed small bug in RootTaskFilter (occured when choosen whole tasks, not only a subpart of them)
+	* storing the report user's title between reports. It is stored inside the configuration file as a temporary property
+	* storing the report start and stop dates between reports. They are stored inside the configuration file as a temporary property
+	* added the name of a report in the report's configuration window
+	* changed the detail and summary report to position the report title on the center
+	* changed the build file to store a version information when builing
+	* changed the build file to rebuild file before making a release
+	* added ant tags to xslt files
+	* added information about current version. It's added to the app's title (when no active task) and in about window.
+
+2005-06-21  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* added new report - export to flat file (csv)
+	* added new filter (IncludeColumnNames) to use mainly with the new csv report
+	* added new filter (ColumnSeparator) to use mainly with the new csv report
+
+2005-06-20  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* added localization to reports via properties files and customizing xslt templates to use dictonary copied into xml generated file
+	* added new report filter - ReportTitleFilter to specify the title of the report
+	* changed the detail report xslt template to include the given report title and change its look depending on this parameter
+	* changed the detail report xslt template to show the subtask's duration only if differs from one-level duration
+	* changed the detail report xslt template to look a little nicer
+	* added new xslt template - summary one. It's similar to the detail one but contains no timeslots information
+	* changed the detail & summary reports to include the given report start and stop date
+
+============================== version 0.3 beta ============================
+
+2005-06-15  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* done RFE #1188076 - menu "go to active task" to timeslot's popup menu
+	* added Polish translation
+	* fixed bug with loading LayoutManager default computer Locale, not set in configuration
+	* fixed tree popup menu not to require a mnemonic for favourites items
+	* app's title changes when task is started/stopped
+
+2005-06-14  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* done TODO #1185179 - gui for configuration
+	* changed hardcoded configuration property names to constants from Configuration class
+	* changed the detail xslt template file not to bold timeslots
+	* fixed bug #1213554 - Actually running tasks are gathered even if are later
+	* added some comment into README file about ant targets
+	* changed the detail xslt template file to encolse all tasks, even the root one.
+	* added new report filter to choose the starting task (a new root) to encolse only its children.
+	* storing the result filename between reports. The last result filename is stored inside the configuration file.
+
+============================== version 0.2.1 beta ============================
+
+2005-05-31  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* fixed bug #1190180
+	* done todo #1185193
+	* added information about project homepage to about window
+	* added tooltips to report configuration window and into custom report window
+
+2005-05-30  Zbigniew Ogledzki <zgibek@users.sourceforge.net>
+	* implementing a new report CustomReport which gives the ability to choose your own xslt filter file and use it with your data.
+	* added support for errors during making reports. A message box is shown if any occured.
+
+============================== version 0.2 beta ============================
+nothing logged

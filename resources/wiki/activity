@@ -1,0 +1,22 @@
+== Activity/Monitoring support ==
+
+Current status:
+  * ask user every N minutes with common ChangeActiveTaskDialog 
+  * saves (if setted) current screenshot after every popup event
+
+Next stage:
+ * detect user activity. Java and JNA (http://ochafik.free.fr/blog/?p=98)
+ * choosing policy: ask every N min or detect user inactivity
+ * reimplement active task dialogs/tray icon for better usability (Unintuitive behavior for monitoring dialog - ID: 2849132, Timing mechanizm - ID: 1185191, Interface and usability in Ubuntu - ID: 2894749)
+
+Known todos:
+ * screenshots (how useful this feature?)
+  * removing old screenshots after configured days
+  * ability to open linked screenshot in timeslot attribute in full size by open icon of just double click.
+  * ability to delete screenshot, right from timeslot:
+    * question if delete after attribute delete
+    * timeslot's attribute remains but button for delete pressed.
+  * in table with attributes add renderer for screenshot path and visualize the file is not found (for example deleted or moved).
+  * the same but inside the attribute.
+  * option in configuration to mass delete all screenshots attribute with optional to remove image files.
+

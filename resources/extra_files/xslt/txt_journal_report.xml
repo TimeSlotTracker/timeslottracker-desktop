@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<!--
+# File version: $Revision: 1.3 $,  $Date: 2008-08-21 14:55:29 $
+#  Last change: $Author: cnitsa $
+-->
+
+<xsl:transform version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+<xsl:output method="text" encoding="UTF-8" omit-xml-declaration="yes" indent="no"/>
+
+<xsl:param name="reportTitle" select="'noName'"/>
+<xsl:param name="startDate" select="'noDate'" />
+<xsl:param name="stopDate" select="'noDate'" />
+
+<xsl:strip-space elements="*"/>
+
+<xsl:template match="/">
+    <xsl:apply-templates select="/TimeSlotTracker_Report/dictionary"/>
+    <xsl:apply-templates select="/TimeSlotTracker_Report/task"/>
+</xsl:template>
+
+<!-- ignoring following elements -->
+<xsl:template match="dictionary"/>
+
+<!-- root element -->
+<xsl:template match="task">
+
+<xsl:value-of select="/TimeSlotTracker_Report/dictionary/duration-spent-on-all-taks"/>
+<xsl:text> </xsl:text>
+
+    <xsl:call-template name="time">
+        <xsl:with-param name="allTime" select="./duration/secondsWithChildren"/>
+    </xsl:call-template>
+
+<xsl:text>
+</xsl:text>
+
+    <xsl:if test="not($startDate='noDate') and not($stopDate='noDate')">
+        <xsl:value-of select="/TimeSlotTracker_Report/dictionary/time-period-start"/>
+        <xsl:text> </xsl:text>
+        <xsl:value-of select="$startDate"/>
+        <xsl:text> </xsl:text>
+        <xsl:value-of select="/TimeSlotTracker_Report/dictionary/time-period-end"/>
+        <xsl:text> </xsl:text>
+        <xsl:value-of select="$stopDate"/>
+    </xsl:if>
+
+<xsl:text>
+</xsl:text>
+
+  <xsl:for-each select="//dayByDayLoop/day/datetime">
+
+        <xsl:sort select="year" data-type="number" order="ascending"/>
+        <xsl:sort select="month" data-type="number" order="ascending"/>
+        <xsl:sort select="day" data-type="number" order="ascending"/>
+
+        <xsl:variable name="year" select="year"/>
+        <xsl:variable name="month" select="month"/>
+        <xsl:variable name="day" select="day"/>
+
+        <xsl:if test="(//timeslot/startDate/datetime/year = $year) and (//timeslot/startDate/datetime/month = $month) and (//timeslot/startDate/datetime/day = $day)">
+
+<xsl:text>
+</xsl:text>
+<xsl:value-of select="date"/>
+<xsl:variable name="day-time" select="sum(//timeslot/duration/seconds[../../startDate/datetime/year=$year and ../../startDate/datetime/month=$month and ../../startDate/datetime/day=$day])"/>
+<xsl:text> </xsl:text>
+<xsl:call-template name="time">
+    <xsl:with-param name="allTime" select="$day-time" />
+</xsl:call-template>
+<xsl:text>
+</xsl:text>
+
+            <xsl:for-each select="//timeslot">
+
+                <xsl:sort select="./startDate/datetime/hour"
+                          data-type="number"
+                          order="ascending"/>
+                <xsl:sort select="./startDate/datetime/min"
+                          data-type="number"
+                          order="ascending"/>
+
+                <xsl:if test="(./startDate/datetime/year = $year) and (./startDate/datetime/month = $month) and (./startDate/datetime/day = $day)">
+
+                    <xsl:apply-templates select="." mode="by-days"/>
+
+                </xsl:if>
+
+            </xsl:for-each>
+        </xsl:if>
+    </xsl:for-each>
+</xsl:template>
+
+<!-- showing allTime seconds in form (HH:mm) -->
+<xsl:template name="time">
+		<xsl:param name="allTime">0</xsl:param>
+
+    <xsl:text>(</xsl:text>
+		<xsl:variable name="allHours" select="format-number(floor($allTime div 3600), '00')"/>
+ 		<xsl:value-of select="$allHours"/>
+		<xsl:text>:</xsl:text>
+		<xsl:variable name="allMinutes" select="format-number(($allTime - $allHours * 3600) div 60, '00')"/>
+		<xsl:value-of select="$allMinutes"/>
+ 		<xsl:text>)</xsl:text>
+</xsl:template>
+
+<!-- showing timeslots -->
+<xsl:template match="timeslot" mode="by-days">
+  <xsl:if test="not(./duration/seconds='0')">
+
+    <xsl:text>    </xsl:text>
+
+    <xsl:apply-templates select="./startDate/datetime"/>
+    <xsl:text>-</xsl:text>
+    <xsl:apply-templates select="./stopDate/datetime"/>
+
+    <xsl:text> </xsl:text>
+
+    <xsl:call-template name="time">
+        <xsl:with-param name="allTime" select="./duration/seconds" />
+    </xsl:call-template>
+
+    <xsl:text>  </xsl:text>
+
+    <xsl:if test="not( description='' )">
+        <xsl:value-of select="description"/>
+    </xsl:if>
+
+    <xsl:apply-templates select="parent::task" mode="path"/>
+
+<xsl:text>
+</xsl:text>
+  </xsl:if>
+</xsl:template>
+
+<!-- showing task name for timeslot -->
+<xsl:template match="task" mode="path">
+    <xsl:if test="not( ./name/text() = '' )">
+        <xsl:text> / </xsl:text><xsl:value-of select="./name/text()"/>
+    </xsl:if>
+
+    <xsl:apply-templates select="parent::task[@task_Id != '_1']" mode="path"/>
+</xsl:template>
+
+<!-- showing datetime in form HH:MM -->
+<xsl:template match="datetime">
+<xsl:value-of select="format-number(hour, '00')"/>:<xsl:value-of select="format-number(./min,'00')"/>
+</xsl:template>
+
+</xsl:transform>

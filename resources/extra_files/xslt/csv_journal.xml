@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!-- 
+# File version: $Revision: 1.1 $,  $Date: 2005-10-30 21:49:55 $
+#  Last change: $Author: zgibek $
+-->
+<xsl:transform version="1.0"
+               xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:output method="text" encoding="UTF-8" 
+            omit-xml-declaration="yes"
+            indent="no"/>
+<xsl:param name="includeColumnNames" select="'noName'"/>
+<xsl:param name="columnSeparator" select="';'"/>
+  
+  <xsl:template match="/">
+    <xsl:if test="$includeColumnNames='yes'">
+      <xsl:value-of select="/TimeSlotTracker_Report/dictionary/column-start-date" />
+      <xsl:value-of select="$columnSeparator" />
+      <xsl:value-of select="/TimeSlotTracker_Report/dictionary/column-stop-date" />
+      <xsl:value-of select="$columnSeparator" />
+      <xsl:value-of select="/TimeSlotTracker_Report/dictionary/column-duration" />
+      <xsl:value-of select="$columnSeparator" />
+      <xsl:value-of select="/TimeSlotTracker_Report/dictionary/column-taskName" />
+      <xsl:value-of select="$columnSeparator" />
+      <xsl:value-of select="/TimeSlotTracker_Report/dictionary/column-description" />
+      <xsl:text>
+</xsl:text>
+    </xsl:if>
+    <xsl:apply-templates select="//timeslot">
+      <xsl:sort select="./startDate/datetime/year"
+                data-type="number"
+                order="ascending" />
+      <xsl:sort select="./startDate/datetime/month"
+                data-type="number"
+                order="ascending" />
+      <xsl:sort select="./startDate/datetime/day"
+                data-type="number"
+                order="ascending" />
+      <xsl:sort select="./startDate/datetime/hour"
+                data-type="number"
+                order="ascending" />
+      <xsl:sort select="./startDate/datetime/min"
+                data-type="number"
+                order="ascending" />
+    </xsl:apply-templates>
+  <xsl:text />
+  </xsl:template>
+
+  <xsl:template match="timeslot">
+    <xsl:if test="not(./duration/duration='0:00')">
+      <xsl:apply-templates select="./startDate/datetime" />
+      <xsl:value-of select="$columnSeparator" />
+      <xsl:apply-templates select="./stopDate/datetime" />
+      <xsl:value-of select="$columnSeparator" />
+      <xsl:value-of select="./duration/duration"/>
+      <xsl:value-of select="$columnSeparator" />
+      <xsl:value-of select="../name"/>
+      <xsl:value-of select="$columnSeparator" />
+      <xsl:value-of select="description"/>
+      <xsl:text>
+</xsl:text>
+    </xsl:if>
+    <!--<xsl:apply-templates select="./task" />-->
+  </xsl:template>
+
+  <xsl:template match="datetime">
+    <!-- format date time as "yyyy-mm-dd hh:mm" -->
+    <xsl:value-of select="format-number(year,'0000')"/>-<xsl:value-of select="format-number(month,'00')"/>-<xsl:value-of select="format-number(day,'00')"/><xsl:text> </xsl:text><xsl:value-of select="hour"/>:<xsl:value-of select="format-number(./min,'00')"/>
+  </xsl:template>
+
+</xsl:transform>

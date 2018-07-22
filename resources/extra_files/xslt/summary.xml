@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<!-- 
+# File version: $Revision: 1.6 $,  $Date: 2006-04-04 21:49:19 $
+#  Last change: $Author: zgibek $
+-->
+
+<xsl:transform version="1.0"
+               xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:output method="html" encoding="UTF-8" omit-xml-declaration="yes"/>
+<xsl:param name="reportTitle" select="'noName'"/>
+<xsl:param name="startDate" select="'noDate'" />
+<xsl:param name="stopDate" select="'noDate'" />
+  
+  <xsl:template match="dictionary"/>
+  <xsl:template match="dayByDayLoop"/>
+
+  <xsl:template match="task">
+    <html>
+      <head>
+      <!-- title is choosen from parametr "reportTitle" or set as a first task's name -->
+      <title>
+        <xsl:choose>
+          <xsl:when test="$reportTitle='noName'">
+            <xsl:value-of select="name"/>
+          </xsl:when>
+          <xsl:otherwise><xsl:value-of select="$reportTitle" /></xsl:otherwise>
+        </xsl:choose>
+      </title>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      </head>
+      <body>
+        <xsl:choose>
+          <xsl:when test="not($reportTitle='noName')">
+            <div align="center"><big><b><u><xsl:value-of select="$reportTitle" /></u></b></big></div><br/>
+            <!-- choosen from dictionary, in english: "Time spent on all tasks" -->
+            <xsl:value-of select="/TimeSlotTracker_Report/dictionary/duration-spent-on-all-taks"/>: 
+              <big><xsl:value-of select="./duration/durationWithChildren"/></big>
+            <br/>
+          </xsl:when>
+        </xsl:choose>
+        
+        <!-- Print (if given) the report start and end date -->
+        <xsl:if test="not($startDate='noDate') and not($stopDate='noDate')">
+          <xsl:value-of select="/TimeSlotTracker_Report/dictionary/time-period-start"/>
+          &#160;<b><xsl:value-of select="$startDate" /></b>&#160;
+          <xsl:value-of select="/TimeSlotTracker_Report/dictionary/time-period-end"/>
+          &#160;<b><xsl:value-of select="$stopDate" /></b>
+          
+        </xsl:if>
+
+        <!-- Print tasks -->
+        <ol>
+          <xsl:apply-templates mode="child" select="." />
+        </ol>
+        
+        <!-- footer -->
+        <hr size="1" width="100%"/>
+        <small><div align="center">
+          <xsl:value-of select="/TimeSlotTracker_Report/dictionary/report-created-by"/>&#160;
+          (<a href="{/TimeSlotTracker_Report/dictionary/report-created-by-url}" target="TimeSlotTracker">
+          <xsl:value-of select="/TimeSlotTracker_Report/dictionary/report-created-by-url-title"/></a>)
+       </div></small>
+       
+      </body>
+    </html>
+  </xsl:template>               
+                 
+  <xsl:template match="task" mode="child">
+    <!-- include this task only if there is some timeslots 
+         (i.e. durationWithChildren is not 0:00) -->
+    <xsl:if test="not(./duration/durationWithChildren='0:00')">
+      <li>
+      <strong><xsl:value-of select="name"/></strong>
+      &#160;
+      <!-- choosen from dictionary, in english: "Duration" -->
+      (<xsl:value-of select="/TimeSlotTracker_Report/dictionary/duration"/>: 
+      <b><xsl:value-of select="./duration/duration"/></b>
+      
+      <!-- show the subtasks's time only if differ from this level task -->
+      <xsl:if test="not(./duration/duration=./duration/durationWithChildren)">
+        <!-- coosen from dictionary, in english: "including subtasks" -->
+        , <xsl:value-of select="/TimeSlotTracker_Report/dictionary/duration-including-subtasks" />: 
+          <b><xsl:value-of select="./duration/durationWithChildren"/></b>
+      </xsl:if>
+      )
+      <xsl:if test="not(./description='')">
+        <br/>
+        <small>(<xsl:value-of select="/TimeSlotTracker_Report/dictionary/description" />:
+        <xsl:value-of select="description"/>)</small>
+      </xsl:if>
+      <!-- print attributes -->
+      <br/><xsl:apply-templates select="./attributes" />
+      </li>
+      
+      <!-- subtasks -->
+      <ol>
+      <xsl:apply-templates mode="child" select="./task" />
+      </ol>
+    </xsl:if>
+  </xsl:template>
+  
+  <xsl:template match="attributes">
+    <xsl:for-each select="./attribute">
+      <i><xsl:value-of select="./name" /></i>:&#160;<xsl:value-of select="value" />
+      <br/>
+    </xsl:for-each>
+  </xsl:template>
+               
+</xsl:transform>

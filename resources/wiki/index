@@ -1,0 +1,18 @@
+== Start ==
+Our banner: Easy, stable and useful time tracker.
+
+Wiki, for what?:
+  * documentation hosting
+  * discuss decisions before implementation. The forums are not quite useful for it.
+  * involve users in feature's discussion
+
+[wiki:Documentation User documentation]
+
+
+Visions for development:
+  * TrayIconEnhancement - __implemented__
+  * ImportExport - __partly implemented__
+  * MonitoringSupport - __in work__
+  * SearchEnhancement
+  * GlobalShortcuts
+

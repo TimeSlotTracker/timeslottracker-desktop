@@ -1,0 +1,46 @@
+<!ELEMENT TimeSlotTracker (attributeType*, root, active?, favourites*)>
+
+<!ELEMENT attributeType EMPTY>
+<!ATTLIST attributeType category CDATA #REQUIRED>
+<!ATTLIST attributeType name CDATA #REQUIRED>
+<!ATTLIST attributeType description CDATA #IMPLIED>
+<!ATTLIST attributeType defaultValue CDATA #REQUIRED>
+<!ATTLIST attributeType usedInTasks (true | false) #REQUIRED>
+<!ATTLIST attributeType usedInTimeSlots (true | false) #REQUIRED>
+<!ATTLIST attributeType hiddenOnReports (true | false) #IMPLIED>
+<!ATTLIST attributeType showInTaskInfo (true | false) #IMPLIED>
+<!ATTLIST attributeType showInTimeSlots (true | false) #IMPLIED>
+<!ATTLIST attributeType autoAddToTimeSlots (true | false) #IMPLIED>
+
+<!ELEMENT root (task*)>
+<!ATTLIST root taskId ID #REQUIRED>
+<!ATTLIST root name CDATA #REQUIRED>
+<!ATTLIST root description CDATA #IMPLIED>
+
+<!ELEMENT active EMPTY>
+<!ATTLIST active taskId IDREF #REQUIRED>
+<!ATTLIST active timeslotIndex NMTOKEN #REQUIRED>
+
+<!ELEMENT task (timeslot*, attribute*, task*)>
+<!ATTLIST task taskId ID #REQUIRED>
+<!ATTLIST task name CDATA #REQUIRED>
+<!ATTLIST task description CDATA #IMPLIED>
+<!ATTLIST task timeInTask NMTOKEN #IMPLIED>
+<!ATTLIST task timeIncludingSubtasks NMTOKEN #IMPLIED>
+<!ATTLIST task hidden (true | false) #IMPLIED>
+
+<!ELEMENT timeslot (timeslotAttribute*)>
+<!ATTLIST timeslot timeslotId CDATA #IMPLIED>
+<!ATTLIST timeslot start CDATA #IMPLIED>
+<!ATTLIST timeslot stop CDATA #IMPLIED>
+<!ATTLIST task duration NMTOKEN #IMPLIED>
+<!ATTLIST timeslot description CDATA #REQUIRED>
+
+<!ELEMENT timeslotAttribute (#PCDATA)>
+<!ATTLIST timeslotAttribute type CDATA #REQUIRED>
+
+<!ELEMENT attribute (#PCDATA)>
+<!ATTLIST attribute type CDATA #REQUIRED>
+
+<!ELEMENT favourites EMPTY>
+<!ATTLIST favourites taskId IDREF #REQUIRED>

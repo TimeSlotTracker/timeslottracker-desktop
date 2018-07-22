@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE TimeSlotTracker SYSTEM "timeslottracker.dtd">
+
+<TimeSlotTracker>
+
+  <attributeType
+     category="net.sf.timeslottracker.data.IntegerAttribute"
+     name="Project number"
+     description=""
+     defaultValue=""
+     usedInTasks="true"
+     usedInTimeSlots="false"
+  />
+  <attributeType
+     category="net.sf.timeslottracker.data.SimpleTextAttribute"
+     name="Project manager"
+     description=""
+     defaultValue=""
+     usedInTasks="true"
+     usedInTimeSlots="false"
+  />
+  <attributeType
+     category="net.sf.timeslottracker.data.TextAreaAttribute"
+     name="Long description"
+     description="A long description - multiline edit object"
+     defaultValue=""
+     usedInTasks="true"
+     usedInTimeSlots="true"
+  />
+
+  <root taskId="_1" name="Your tasks" description="">
+    <task taskId="_2" name="Paid projects" description="">
+      <task taskId="_4" name="Bank data integration" description="">
+        <attribute type="Project number" ><![CDATA[34]]></attribute>
+      </task>
+    </task>
+    <task taskId="_3" name="SourceForge" description="">
+      <task taskId="_5" name="TimeSlotTracker" description="http://sourceforge.net/projects/timeslottracker/">
+        <attribute type="Project number" ><![CDATA[344]]></attribute>
+        <attribute type="Project manager" ><![CDATA[zgibek]]></attribute>
+        <attribute type="Long description" ><![CDATA[TimeSlotTracker is a tool for registering and reporting time slots. 
+Written in Sun Java, using Swing for GUI, XML for data and XSLT for making reports.]]></attribute>
+        <task taskId="_6" name="Getting new version" description="(download a new version from sourceforge.net)">
+          <timeslot start="2005-04-16 10:02" stop="2005-04-16 10:06" description="initial version" />
+        </task>
+        <task taskId="_7" name="Inspecting what is going on" description="Well, let me see what timeslottracker can do for me...">
+          <timeslot start="2005-04-15 08:30" stop="2005-04-15 08:34" description="filling some default, template data" />
+          <timeslot start="2005-04-16 08:00" stop="2005-04-16 08:41" description="filling some default, template data" />
+        </task>
+        <task taskId="_8" name="Development" description="">
+          <timeslot start="2005-04-16 08:41" stop="2005-04-16 09:40" description="preparing some fake data" />
+          <task taskId="_10" name="Implementing XmlDataSource" description="class for using an xml file as a data source">
+            <timeslot start="2005-04-10 07:01" stop="2005-04-10 19:01" description="template task" />
+          </task>
+        </task>
+      </task>
+    </task>
+    <task taskId="_9" name="Home tasks" description="">
+      <task taskId="_11" name="Taking a bath" description="">
+        <timeslot start="2005-03-12 10:00" stop="2005-03-12 10:30" description="" />
+      </task>
+      <task taskId="_12" name="Dinner" description="">
+        <timeslot start="2005-03-21 15:20" stop="2005-03-21 16:04" description="" />
+      </task>
+    </task>
+  </root>
+
+  <favourites taskId="_4" />
+  <favourites taskId="_7" />
+  <favourites taskId="_8" />
+
+</TimeSlotTracker>

@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Created-By: Andrey Glazachev (cnitsa)
+Main-Class: net.sf.timeslottracker.Starter
+Class-Path: tst.jar
+
+

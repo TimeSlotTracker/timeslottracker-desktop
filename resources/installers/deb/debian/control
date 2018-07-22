@@ -1,0 +1,11 @@
+Source: timeslottracker
+Section: utils
+Priority: optional
+Maintainer: Andrey Glazachev <cnitsa@users.sourceforge.net>
+Standards-Version: 3.8.0
+Homepage: http://sourceforge.net/projects/timeslottracker/
+
+Package: timeslottracker
+Architecture: all
+Depends: sun-java6-jre | openjdk-6-jre | openjdk-7-jre | openjdk-8-jre | openjdk-9-jre
+Description: Simple and useful Time Tracking tool written in java

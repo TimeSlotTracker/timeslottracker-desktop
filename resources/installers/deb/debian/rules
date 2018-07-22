@@ -1,0 +1,75 @@
+#!/usr/bin/make -f
+#export DH_VERBOSE=1
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_prep
+	dh_installdirs
+	dh_install ../../../target/tst.jar ./usr/lib/timeslottracker
+	cp ../../icons/users/clock48.png ./debian/timeslottracker/usr/share/icons/hicolor/scalable/apps/tst.png
+	dh_install debian/bin/tst ./usr/bin/
+	dh_install debian/etc/timeslottracker.properties ./etc/timeslottracker/
+	dh_install debian/etc/logging.properties ./etc/timeslottracker/
+	chmod 666 debian/timeslottracker/etc/timeslottracker/timeslottracker.properties
+	chmod 777 debian/timeslottracker/etc/timeslottracker/
+	dh_install debian/etc/timeslottracker ./etc/default/
+	dh_install debian/usr/ ./
+	mkdir -p debian/timeslottracker/var/lib/timeslottracker/backup/
+	chmod -R 777 debian/timeslottracker/var/lib/timeslottracker/
+	mkdir -p debian/timeslottracker/var/log/timeslottracker/
+	chmod 777 debian/timeslottracker/var/log/timeslottracker/
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs
+	dh_installdocs
+#	dh_installexamples
+	dh_install
+#	dh_installmenu
+#	dh_installdebconf
+#	dh_installlogrotate
+#	dh_installemacsen
+#	dh_installcatalogs
+#	dh_installpam
+#	dh_installmime
+#	dh_installinit
+#	dh_installcron
+#	dh_installinfo
+#	dh_installwm
+#	dh_installudev
+#	dh_lintian
+#	dh_undocumented
+#	dh_installman
+	dh_link
+	dh_strip
+	dh_compress
+#	dh_fixperms -X /etc/timeslottracker/timeslottracker.properties -X /var/lib/timeslottracker/ -X /var/lib/timeslottracker/backup/ -X /var/log/timeslottracker/
+#	dh_perl
+#	dh_python
+#	dh_makeshlibs
+#	dh_installdeb
+#	dh_shlibdeps
+	dh_gencontrol -- -v$(release)
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install

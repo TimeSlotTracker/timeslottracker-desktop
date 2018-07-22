@@ -1,0 +1,70 @@
+-- ===========================================================================
+      Revision: $Revision: 920 $
+          Date: $Date: 2009-08-22 12:41:06 +0800 (Сб, 22 авг 2009) $
+   Last change: $Author: cnitsa $
+-- ===========================================================================
+
+* Application should connect to data via sth like a DataInterface. 
+  The interface layer is for isolating data layer from a view layer. 
+  From a application point of view the only interesting is that 
+  someone else know how to get data, how to save them, etc.
+
+* Huge use of interfaces. This software will be evaluate in the future (I hope)
+  so this should give a great opportunity to exchange some parts of application
+
+* Application should be as simple as possible, with good usability
+
+* Data should be saved in xml format. Application will make use of SAX Parser 
+  (to read it on the start) and ? for saving it. Maybe for the begging we will
+  manually construct the xml file.
+  
+* There should be a possibility to keep data in other formats as well.
+  The Data interface should be so universal to make it useful to use a database,
+  flat files or client/server approach.
+
+* Data should be saved some every time (in example 5 minutes) and this autosave
+  timeout should be configurable by a user.
+
+* The xml file can grow up to some large size. To works fine the XML data class
+  should make a transaction log - Vector of serialized objects representing 
+  every change a user did. Then - every (for example) 1 hour whole xml file 
+  is rewritten to be actual. This should save some time if needed (if xml file
+  grew too much). The xml file should also be regenerated also when a user
+  closes application.
+  We need the transaction log of serialized objects when application crashes
+  for some reason. Then, when a users starts timeslottracker again it should
+  works in a such scenario:
+  1. read existed xml file
+  2. read our transaction log and apply every operation in order they appear
+  3. regenerate the xml file
+  4. continue the normal startup
+  After every successfully regenerating the xml file transaction log should 
+  be cleaned.
+
+* Structure (described in dtd file) should be similar to:
+  TASK 1
+   +- TASK 1.1
+       +- time slot 1.1.1
+       +- time slot 1.1.2
+   +- TASK 1.2
+       +- description
+  TASK 2
+   +- description
+   +- (*) category 2.*
+   +- (*) time slot 2.*
+   +- TASK 2.1
+       +- description
+       +- (*) time slot 2.1.*
+           +- description
+       +- (*) category 2.1.*
+       +- TASK 2.1.1
+
+  where: TASK (x) means our projects, sub-projects and tasks (any depth).
+          It have one attribute - name
+         time slot means a continuous time from attribute "start" to "finish". 
+          It should also have an extra attribute "active".
+         description means tree text describing that level (task or time slot) 
+          - in the future it should be in html form
+         category means zero, one or more free attributes from category's 
+          dictionary (a user configurable one)
+

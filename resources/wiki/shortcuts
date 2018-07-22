@@ -1,0 +1,6 @@
+== Global shortcuts ==
+  * implement global shortcuts for start/stop, show today, change task, ...
+
+Implementations:
+  * http://melloware.com/products/jintellitype/
+  * https://sourceforge.net/projects/jxgrabkey/

@@ -1,0 +1,44 @@
+body { 
+ margin: 5 5 5 5;
+ background-color: #FFFFFF;
+ font-size:small; 
+ font-weight: normal;
+ font-family: Helvetica, Arial CE, Arial, san-serif, Verdana; background-color:white;
+}
+ 
+table {
+ font-size: small; 
+ font-weight:normal;
+}
+
+.taskName-title { 
+ background-color: #D6D6D6;
+ font-weight: bold;
+}
+
+.day-title { 
+ background-color:#D6D6D6;
+ text-align: center;
+ font-weight: bold;
+}
+
+.sum-title { 
+ background-color:#D6D6D6;
+ text-align: right;
+ font-weight: bold;
+}
+
+.taskName {
+ background-color:#D6D6D6;
+}
+
+.sum { 
+ background-color:#D6D6D6;
+ text-align: right;
+ font-weight: normal;
+}
+
+.duration {
+ empty-cells: show;
+ text-align: right;
+}

@@ -1,0 +1,8 @@
+usr/bin
+usr/lib/timeslottracker
+usr/share/icons/hicolor/scalable/apps
+etc/timeslottracker
+etc/default
+var/log/timeslottracker
+var/lib/timeslottracker
+var/lib/timeslottracker/backup

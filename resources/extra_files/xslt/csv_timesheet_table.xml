@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<!-- 
+# File version: $Revision: 1.3 $,  $Date: 2008-01-07 23:24:43 $
+#  Last change: $Author: zgibek $
+-->
+<xsl:transform version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:output method="text" encoding="UTF-8" omit-xml-declaration="yes"/>
+<xsl:param name="dateColumnLook" select="'yyyy-MM-dd'" />
+<xsl:param name="columnSeparator" select="';'"/>
+<xsl:param name="includeColumnNames" select="'noName'"/>  
+<xsl:param name="durationFormat" select="'decimal'" />
+
+<xsl:strip-space elements="*"/>
+
+<xsl:key name="taskIdKey" match="task" use="@taskId" />
+  
+  <xsl:template match="/">
+    <xsl:apply-templates select="/TimeSlotTracker_Report/dictionary" />
+    <xsl:apply-templates select="/TimeSlotTracker_Report/task" />
+  </xsl:template>
+  
+  <xsl:template match="dictionary"/>
+
+  <xsl:template match="task">
+    <xsl:if test="$includeColumnNames='yes'">
+        <!-- header of report -->
+        <xsl:value-of select="/TimeSlotTracker_Report/dictionary/column-description"/>
+<xsl:value-of select="$columnSeparator"/>
+        <xsl:apply-templates select="/TimeSlotTracker_Report/dayByDayLoop/day" mode="header">
+          <xsl:sort select="datetime/date" />
+        </xsl:apply-templates>
+        <xsl:value-of select="/TimeSlotTracker_Report/dictionary/sum"/>
+<xsl:text>
+</xsl:text>
+      <!-- end header of report -->
+    </xsl:if>
+    
+        <!-- body of report -->
+        <xsl:apply-templates select="//task[generate-id(.)=generate-id(key('taskIdKey',@taskId)[1]) and ./timeslot]" 
+                             mode="timeslots" />
+        <!-- end body of report -->
+
+        <!-- sum of report -->
+        <xsl:value-of select="/TimeSlotTracker_Report/dictionary/sum"/>
+<xsl:value-of select="$columnSeparator"/>
+        <xsl:apply-templates select="/TimeSlotTracker_Report/dayByDayLoop/day" mode="sum">
+          <xsl:sort select="datetime/date" />
+        </xsl:apply-templates>
+        <!-- horizontal sum -->
+        <xsl:variable name="seconds" select="sum(//timeslot/duration/seconds)" />
+        <xsl:call-template name="print-time">
+          <xsl:with-param name="seconds" select="$seconds" />
+        </xsl:call-template>
+        <!-- end sum of report -->
+  </xsl:template>
+  
+  <xsl:template match="day" mode="header">
+    <xsl:choose>
+      <xsl:when test="$dateColumnLook='yyyy-MM-dd'">
+        <xsl:value-of select="datetime/date"/>
+      </xsl:when>
+      <xsl:when test="$dateColumnLook='yyyy-MM-dd/dayOfWeek.name'">
+        <xsl:value-of select="datetime/date"/>-
+        <xsl:value-of select="datetime/dayOfWeekName" />
+      </xsl:when>
+      <xsl:when test="$dateColumnLook='dayOfWeek.name'">
+        <xsl:value-of select="datetime/dayOfWeekName" />
+      </xsl:when>
+      <xsl:when test="$dateColumnLook='dayOfWeek.shortname'">
+        <xsl:value-of select="datetime/dayOfWeekNameShort" />
+      </xsl:when>
+      <xsl:when test="$dateColumnLook='dayOfMonth'">
+        <xsl:value-of select="datetime/day"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="datetime/date"/>
+      </xsl:otherwise>
+    </xsl:choose>
+<xsl:value-of select="$columnSeparator" />
+  </xsl:template>
+
+  <xsl:template match="task" mode="timeslots">
+    <xsl:variable name="taskId" select="@taskId" />
+    <xsl:if test="../../name">
+      <xsl:value-of select="../../name"/><xsl:text> &gt;</xsl:text>
+    </xsl:if>
+    <xsl:if test="../name">
+      <xsl:value-of select="../name"/><xsl:text> &gt;</xsl:text>
+    </xsl:if>
+    <xsl:value-of select="name" />
+<xsl:value-of select="$columnSeparator" />
+    <xsl:apply-templates select="/TimeSlotTracker_Report/dayByDayLoop/day" mode="body">
+      <xsl:sort select="day" />
+      <xsl:with-param name="taskId" select="@taskId" />
+    </xsl:apply-templates>
+    <!-- horizontal sum -->
+    <xsl:variable name="seconds" select="sum(//timeslot/duration/seconds[../../../@taskId=$taskId])" />
+    <xsl:call-template name="print-time">
+      <xsl:with-param name="seconds" select="$seconds" />
+    </xsl:call-template>
+<xsl:text>
+</xsl:text>    
+  </xsl:template>
+  
+  <xsl:template match="day" mode="body">
+    <xsl:param name="taskId" />
+    <xsl:variable name="currentDate" select="datetime/date" />
+    <xsl:variable name="seconds" select="sum(//timeslot/duration/seconds[../../../@taskId=$taskId and ../../startDate/datetime/date=$currentDate])" />
+    <xsl:call-template name="print-time">
+      <xsl:with-param name="seconds" select="$seconds" />
+    </xsl:call-template>
+<xsl:value-of select="$columnSeparator" />
+  </xsl:template>
+  
+  <xsl:template match="day" mode="sum">
+    <xsl:variable name="currentDate" select="datetime/date" />
+    <xsl:variable name="seconds" select="sum(//timeslot/duration/seconds[../../startDate/datetime/date=$currentDate])" />
+    <xsl:call-template name="print-time">
+      <xsl:with-param name="seconds" select="$seconds" />
+    </xsl:call-template>
+<xsl:value-of select="$columnSeparator" />
+  </xsl:template>
+  
+  <xsl:template name="print-time">
+    <xsl:param name="seconds" />
+    <xsl:choose>
+      <xsl:when test="$seconds=0"></xsl:when>
+      <xsl:otherwise>
+        <xsl:choose>
+          <xsl:when test="$durationFormat='decimal'"> <!-- format in decimal so one and half hour will look as 1,50 with use of $durationFormatDecimalSeparator to separate HH and MM -->
+            <xsl:value-of select="format-number(($seconds div 60) div 60, '0.00')" />
+          </xsl:when>
+          <xsl:otherwise>  <!-- default hh:mm format -->
+            <xsl:value-of select="floor($seconds div 3600)" />
+              <xsl:text>:</xsl:text>
+            <xsl:value-of select="format-number(($seconds mod 3600) div 60,'00')" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+</xsl:transform>

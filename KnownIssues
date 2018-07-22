@@ -1,0 +1,8 @@
+1. After changing look'and'feel some gui elements are not updated. Need restart.
+2. Tray icon on KDE works for jre 6u4+ (http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6448876)
+3. There is bug #2792795 "combo looks wrong" for "metal" look'and'feel (http://sourceforge.net/tracker/?func=detail&aid=2792795&group_id=132880&atid=725539)
+4. There is bug #1721630 "Sometimes TST does not show favorites just after loading" (https://sourceforge.net/tracker/?func=detail&aid=1721630&group_id=132880&atid=725539)
+5. Import/Export does not work for root task. Select subtask.
+6. OpenJDK: shortcuts in task tree doesn't work after first stap/stop task
+7. On some OpenJDK/IcedTea version: DnD Tst deletes the timeslot from the original task but it never appears on the target
+8. OracleJRE 8: browse URL is not supported on linux

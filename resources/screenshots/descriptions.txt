@@ -1,0 +1,17 @@
+1-mainwindow.gif
+Main application window. All modules visible
+
+2-taskdialog.gif
+Dialog window to enter task's data
+
+3-attributedialog.gif
+Dialog window to configure attribute types
+
+4-treepopup.gif
+A popup menu asociated with task's tree
+
+5-timeslotpopup.gif
+A popup menu asociated with timeslots table
+
+6-configuration.gif
+Configuration window

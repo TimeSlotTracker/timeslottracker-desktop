@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!-- 
+# File version: $Revision: 1.4 $,  $Date: 2008-01-07 23:24:43 $
+#  Last change: $Author: zgibek $
+-->
+<xsl:transform version="1.0"
+               xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:output method="text" encoding="UTF-8" 
+            omit-xml-declaration="yes"
+            indent="no"/>
+<xsl:param name="includeColumnNames" select="'noName'"/>
+<xsl:param name="columnSeparator" select="';'"/>
+<xsl:param name="durationFormat" select="'hh:mm'" />
+
+  <xsl:template match="/">
+    <xsl:if test="$includeColumnNames='yes'">
+      <xsl:value-of select="/TimeSlotTracker_Report/dictionary/column-taskName" />
+      <xsl:value-of select="$columnSeparator" />
+      <xsl:value-of select="/TimeSlotTracker_Report/dictionary/column-duration" />
+      <xsl:value-of select="$columnSeparator" />
+      <xsl:value-of select="/TimeSlotTracker_Report/dictionary/column-description" />
+      <xsl:text>
+</xsl:text>
+    </xsl:if>
+    <xsl:apply-templates select="//task" />
+  <xsl:text />
+  </xsl:template>
+
+  <xsl:template match="task">
+    <xsl:if test="not(./duration/duration='0:00')">
+      <xsl:value-of select="name"/>
+      <xsl:value-of select="$columnSeparator" />
+      <xsl:choose>
+        <xsl:when test="$durationFormat='decimal'">
+          <xsl:value-of select="format-number((./duration/seconds div 60) div 60, '0.00')" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="./duration/duration"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:value-of select="$columnSeparator" />
+      <xsl:value-of select="description"/>
+      <xsl:text>
+</xsl:text>
+    </xsl:if>
+    <!--<xsl:apply-templates select="./task" />-->
+  </xsl:template>
+
+</xsl:transform>

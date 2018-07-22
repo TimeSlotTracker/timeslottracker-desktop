@@ -1,0 +1,9 @@
+#!/bin/sh
+. /etc/default/timeslottracker
+
+java \
+${JVM_OPTS} \
+-Dprop.directory=${TST_PROP_DIR} \
+-Dtst.directory=${TST_DATA_DIR} \
+-Ddtd.directory=${TST_DATA_DIR} \
+-jar /usr/lib/timeslottracker/tst.jar

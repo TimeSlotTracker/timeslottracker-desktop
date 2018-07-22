@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<!-- 
+# File version: $Revision: 1.4 $,  $Date: 2006-12-25 22:54:12 $
+#  Last change: $Author: zgibek $
+-->
+
+<xsl:transform version="1.0"
+               xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:output method="html" encoding="UTF-8" omit-xml-declaration="yes"/>
+<xsl:param name="reportTitle" select="'noName'"/>
+<xsl:param name="startDate" select="'noDate'" />
+<xsl:param name="stopDate" select="'noDate'" />
+
+  
+  <xsl:template match="dictionary"/>
+  <xsl:template match="dayByDayLoop"/>
+
+  <xsl:template match="task">
+    <html>
+      <head>
+      <!-- title is choosen from parametr "reportTitle" or set as a first task's name -->
+      <title>
+        <xsl:choose>
+          <xsl:when test="$reportTitle='noName'">
+            <xsl:value-of select="name"/>
+          </xsl:when>
+          <xsl:otherwise><xsl:value-of select="$reportTitle" /></xsl:otherwise>
+        </xsl:choose>
+      </title>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      <link rel="stylesheet" type="text/css" href="report.css" />
+      </head>
+      <body>
+        <xsl:choose>
+          <xsl:when test="not($reportTitle='noName')">
+            <div align="center"><big><b><u><xsl:value-of select="$reportTitle" /></u></b></big></div><br/>
+            <!-- choosen from dictionary, in english: "Time spent on all tasks" -->
+            <xsl:value-of select="/TimeSlotTracker_Report/dictionary/duration-spent-on-all-taks"/>: 
+              <big><xsl:value-of select="./duration/durationWithChildren"/></big>
+            <br/>
+          </xsl:when>
+        </xsl:choose>
+        
+        <!-- Print (if given) the report start and end date -->
+        <xsl:if test="not($startDate='noDate') and not($stopDate='noDate')">
+          <xsl:value-of select="/TimeSlotTracker_Report/dictionary/time-period-start"/>
+          &#160;<b><xsl:value-of select="$startDate" /></b>&#160;
+          <xsl:value-of select="/TimeSlotTracker_Report/dictionary/time-period-end"/>
+          &#160;<b><xsl:value-of select="$stopDate" /></b>
+          
+        </xsl:if>
+        <br clear="all"/>
+        <table border="1" width="100%" cellspacing="3" cellpadding="3">
+        <tr><td width="15%" class="day-title">
+            <xsl:value-of select="/TimeSlotTracker_Report/dictionary/column-period"/>
+            </td><td width="10%" class="day-title">
+            <xsl:value-of select="/TimeSlotTracker_Report/dictionary/column-duration"/>
+            </td><td class="taskName-title">
+            <xsl:value-of select="/TimeSlotTracker_Report/dictionary/column-description"/>
+            </td>
+        </tr>
+        <!-- Print timeslots -->
+          <xsl:apply-templates select="//timeslot">
+            <xsl:sort select="./startDate/datetime/year"
+                      data-type="number"
+                      order="ascending" />
+            <xsl:sort select="./startDate/datetime/month"
+                      data-type="number"
+                      order="ascending" />
+            <xsl:sort select="./startDate/datetime/day"
+                      data-type="number"
+                      order="ascending" />
+            <xsl:sort select="./startDate/datetime/hour"
+                      data-type="number"
+                      order="ascending" />
+            <xsl:sort select="./startDate/datetime/min"
+                      data-type="number"
+                      order="ascending" />
+          </xsl:apply-templates>
+        </table>
+        <!-- footer -->
+        <hr size="1" width="100%"/>
+        <small><div align="center">
+          <xsl:value-of select="/TimeSlotTracker_Report/dictionary/report-created-by"/>&#160;
+          (<a href="{/TimeSlotTracker_Report/dictionary/report-created-by-url}" target="TimeSlotTracker">
+          <xsl:value-of select="/TimeSlotTracker_Report/dictionary/report-created-by-url-title"/></a>)
+       </div></small>
+       
+      </body>
+    </html>
+  </xsl:template>               
+                 
+  <xsl:template match="timeslot">
+      <tr><td nowrap="yes" valign="top">
+      <xsl:apply-templates select="./startDate/datetime" /> ..<br/>
+         <xsl:apply-templates select="./stopDate/datetime" />
+      </td><td valig="top" nowrap="yes" class="duration">
+         <xsl:value-of select="./duration/duration" />
+      </td><td valign="top">
+        <strong><xsl:value-of select="../name"/></strong>&#160;: 
+         <xsl:value-of select="./description" />
+
+        <!-- print attributes -->
+        <br/><xsl:apply-templates select="../attributes" />
+        <xsl:apply-templates select="./attributes" />
+      </td></tr>
+  </xsl:template>
+  
+  <xsl:template match="datetime">
+    <!-- format date time as "yyyy-mm-dd hh:mm" -->
+    <xsl:value-of select="format-number(year,'0000')"/>-<xsl:value-of select="format-number(month,'00')"/>-<xsl:value-of select="format-number(day,'00')"/>
+    &#160;<xsl:value-of select="hour"/>:<xsl:value-of select="format-number(./min,'00')"/>
+  </xsl:template>
+  
+  <xsl:template match="attributes">
+    <xsl:for-each select="./attribute">
+      <i><xsl:value-of select="./name" /></i>:&#160;<xsl:value-of select="value" />
+      <br/>
+    </xsl:for-each>
+  </xsl:template>
+               
+</xsl:transform>

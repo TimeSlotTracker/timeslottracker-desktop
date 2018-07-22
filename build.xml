@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+      Need ANT: 1.7+, Maven 3.x
+-->
+
+<project default="run" name="TimeSlotTracker" basedir=".">
+
+    <loadproperties srcfile="./build.properties"/>
+
+    <property environment="env"/>
+    <property name="user.homedir" value="${env.HOME}"/>
+
+    <property name="deploy" location="target"/>
+    <property name="deb.deploy" location="resources/installers/deb/debian/tmp"/>
+    <property name="deployfile.name" value="tst.jar"/>
+    <property name="deployfile" location="${deploy}/${deployfile.name}"/>
+    <property name="extra_files" value="resources/extra_files"/>
+    <property name="release.docs" location="resources/for-release"/>
+    <property name="nsis" value="makensis"/>
+
+    <!-- release remote paths  -->
+    <property name="scp.url.base"
+              value="${username},timeslottracker@frs.sourceforge.net:/home/frs/project/t/ti/timeslottracker"/>
+    <property name="scp.url.unstable" value="Snapshot"/>
+    <property name="scp.url.release" value="Releases"/>
+
+    <target name="init" description="Initialize common properties">
+        <!-- get mvn project version -->
+        <exec dir="." executable="mvn" outputproperty="release">
+            <arg line="-q -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:exec"/>
+        </exec>
+
+        <!-- evaluate scp url -->
+        <condition property="scp.url" value="${scp.url.base}/${scp.url.unstable}" else="${scp.url.base}/${scp.url.release}">
+            <contains string="${release}" substring="SNAPSHOT"/>
+        </condition>
+        <condition property="finalRelease">
+            <not>
+                <contains string="${project.version}" substring="SNAPSHOT" />
+            </not>
+        </condition>
+
+        <tstamp>
+            <format pattern="HH:mm:ss" property="timestamp.start"/>
+        </tstamp>
+        <echo message="Started at ${timestamp.start}, release version: ${release}"/>
+        <echo message="Scp url: ${scp.url}"/>
+
+        <property name="release.version" value="${ant.project.name}-${release}"/>
+        <property name="release.dir" location="${deploy}/release/${release.version}"/>
+        <property name="package.jar" value="${release.dir}/${release.version}.jar"/>
+        <property name="package.src" value="${release.dir}/${release.version}-sources.jar"/>
+        <property name="package.deb.file" value="timeslottracker_${release}_all.deb"/>
+        <property name="package.deb" value="${release.dir}/${package.deb.file}"/>
+        <property name="package.exe.file" value="${release.version}-setup.exe"/>
+        <property name="package.exe" value="${release.dir}/${release.version}-setup.exe"/>
+
+        <mkdir dir="backup"/>
+        <mkdir dir="${deploy}"/>
+    </target>
+
+    <!--
+
+    Useful tasks for TST running from source
+
+    -->
+
+    <target name="pack" depends="init" description="Make jar package">
+        <exec dir="." executable="mvn">
+            <arg line="clean package"/>
+        </exec>
+    </target>
+
+    <target name="run" depends="pack" description="Run application">
+        <antcall target="backup-data"/>
+        <condition property="jvmArgs" value="-Xdock:name=TimeSlotTracker -Xmx256M" else="-Xmx256M">
+            <os family="mac"/>
+        </condition>
+        <java jar="${deployfile}" fork="true">
+            <sysproperty key="debug" value="yes"/>
+            <jvmarg value="${jvmArgs}"/>
+        </java>
+    </target>
+
+    <target name="backup-data" description="Backup TST data">
+        <tstamp>
+            <format pattern="yyyy-MM-dd_HH-mm-ss" property="timestamp.backup"/>
+        </tstamp>
+        <copy file="${user.homedir}/timeslottracker.xml" tofile="backup/timeslottracker_${timestamp.backup}.xml"
+              failonerror="false"/>
+    </target>
+
+    <target name="clean" description="Clean build artifacts">
+        <delete dir="${deploy}"/>
+        <delete dir="${deb.deploy}"/>
+    </target>
+
+    <target name="rebuild" depends="clean, run" description="Rebuild and run"/>
+
+    <target name="javadoc" description="Create javadoc documentation">
+        <exec dir="." executable="mvn">
+            <arg line="javadoc:javadoc"/>
+        </exec>
+    </target>
+
+    <!--
+
+    Release tasks
+
+    -->
+
+    <target name="release-add-banner" depends="init" description="Add release banner to Changelog" if="finalRelease">
+        <concat destfile="./ChangeLog.tmp">
+            <header><![CDATA[${line.separator}============================== version ${release} ==============================${line.separator}${line.separator}]]></header>
+            <path path="./ChangeLog"/>
+        </concat>
+        <move file="./ChangeLog.tmp" tofile="./ChangeLog" overwrite="true"/>
+        <exec dir="." executable="git">
+            <arg value="add"/>
+            <arg value="ChangeLog"/>
+        </exec>
+        <exec dir="." executable="git">
+            <arg value="commit"/>
+            <arg value="-m [*] add version banner to ChangeLog"/>
+        </exec>
+        <exec dir="." executable="git">
+            <arg value="push"/>
+        </exec>
+    </target>
+
+    <target name="release-make" depends="clean, pack" description="Make release artefacts">
+        <echo message="Preparing release [${release.version}] for SourceForge"/>
+
+        <mkdir dir="${release.dir}"/>
+
+        <!-- sign jar -->
+        <fail unless="keystorepass">You must set keystore password</fail>
+        <fail unless="keypass">You must set private key password</fail>
+        <signjar destDir="${deploy}" alias="tst" keystore="${basedir}/tst-keys" storepass="${keystorepass}"
+                 keypass="${keypass}" preservelastmodified="true">
+            <path>
+                <fileset dir="${deploy}" includes="**/*.jar"/>
+            </path>
+        </signjar>
+
+        <antcall target="deb"/>
+        <!--antcall target="exe" /-->
+
+        <!-- process source jar -->
+        <exec dir="." executable="mvn">
+            <arg line="source:jar"/>
+        </exec>
+        <copy todir="${release.dir}" file="${deploy}/timeslottracker-${release}-sources.jar"/>
+
+        <filter token="version" value="${release}"/>
+        <copy todir="${release.dir}" filtering="true">
+            <fileset dir="${release.docs}"/>
+        </copy>
+
+        <!-- prepare jar archive -->
+        <copy tofile="${package.jar}">
+            <fileset file="${deployfile}"/>
+        </copy>
+
+        <copy todir="${release.dir}">
+            <fileset file="${deploy}/${package.deb.file}"/>
+            <fileset file="${deploy}/${package.exe.file}"/>
+        </copy>
+
+        <echo message=""/>
+        <echo message="Remember to upload files to SourceForge: "/>
+        <echo message="    server: frs.sourceforge.net (Web Upload, WebDAV, rsync over SSH, sftp)"/>
+        <echo message="     login: username"/>
+        <echo message="  password: password"/>
+        <echo message="remote dir: u/us/username/uploads"/>
+        <echo message="      mode: binary"/>
+        <echo message="     file1: ${package.src}"/>
+        <echo message="     file2: ${package.jar}"/>
+        <echo message="     file3: ${package.deb}"/>
+        <echo message="     file4: ${package.exe}"/>
+
+        <echo message=""/>
+        <echo message="Also remember to create new group for this version: "/>
+        <echo message="       url: https://sourceforge.net/p/timeslottracker/bugs/milestones"/>
+
+        <echo message=""/>
+        <echo message="Also remember to update jnlp jar at frs.sourceforge.net"/>
+        <echo message="       cmd: sftp username,timeslottracker@frs.sourceforge.net/htdocs"/>
+    </target>
+
+    <target name="release-deploy" depends="init" description="Deploy release artefacts on Sourceforge">
+        <fail unless="username">You must set username</fail>
+        <fail unless="userpass">You must set userpass</fail>
+
+        <echo>Scp to ${scp.url}</echo>
+
+        <echo>File: ${package.jar}</echo>
+        <scp file="${package.jar}" todir="${scp.url}" password="${userpass}" trust="true"/>
+
+        <echo>File: ${package.deb}</echo>
+        <scp file="${package.deb}" todir="${scp.url}" password="${userpass}" trust="true"/>
+
+        <!--echo>File: ${package.exe}</echo>
+        <scp file="${package.exe}" todir="${scp.url}" password="${userpass}" trust="true" /-->
+    </target>
+
+    <target name="deb" description="Make debian package">
+        <exec executable="sh" dir="${basedir}/resources/installers/deb/">
+            <arg value="-c"/>
+            <arg value="./build.sh ${release}"/>
+        </exec>
+    </target>
+
+    <target name="exe" depends="init" description="Make exe package">
+        <exec executable="sh" dir="${basedir}/resources/installers/nsis/">
+            <arg value="-c"/>
+            <arg value="${nsis} -DPRODUCT_VERSION=${release} tst.nsi"/>
+        </exec>
+        <exec executable="sh" dir="${basedir}/resources/installers/nsis/">
+            <arg value="-c"/>
+            <arg value="${nsis} -DPRODUCT_VERSION=${release} setup.nsi"/>
+        </exec>
+    </target>
+
+</project>

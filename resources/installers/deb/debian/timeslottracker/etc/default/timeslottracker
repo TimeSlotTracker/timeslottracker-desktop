@@ -1,0 +1,10 @@
+# Defaults for timeslottracker
+
+# Default property directory
+TST_PROP_DIR=/etc/timeslottracker
+
+# Default data directory
+TST_DATA_DIR=/var/lib/timeslottracker
+
+# Additional options that are passed to jvm.
+JVM_OPTS="-Djava.util.logging.config.file=/etc/timeslottracker/logging.properties"

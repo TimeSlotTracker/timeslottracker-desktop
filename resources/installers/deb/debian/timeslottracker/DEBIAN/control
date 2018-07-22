@@ -1,0 +1,10 @@
+Package: timeslottracker
+Version: 1.3.7-SNAPSHOT
+Architecture: all
+Maintainer: Andrey Glazachev <cnitsa@users.sourceforge.net>
+Installed-Size: 4854
+Depends: sun-java6-jre | openjdk-6-jre | openjdk-7-jre | openjdk-8-jre | openjdk-9-jre
+Section: utils
+Priority: optional
+Homepage: http://sourceforge.net/projects/timeslottracker/
+Description: Simple and useful Time Tracking tool written in java

@@ -1,0 +1,10 @@
+Export:
+  * ical (tasks w/o timeslots) '''implemented'''
+  * html/txt/csv '''implemented''' (via report)
+
+Import:
+  * from clipboard
+    * create as new task '''implemented'''
+  * from file
+    * ical
+    * csv (tasks w/o timeslots) '''implemented'''
