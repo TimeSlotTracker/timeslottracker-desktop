@@ -1,9 +1,3 @@
--- ===========================================================================
-      Revision: $Revision: 1249 $
-          Date: $Date: 2018-07-21 20:09:30 +0700 (Сб, 21 июл 2018) $
-   Last change: $Author: cnitsa $
--- ===========================================================================
-
 TimeSlotTracker (TST) is a program for registering time spent on some work.
 The main rule is to provide a flexible way to construct a task tree composed
 of projects, (sub)projects and simple task inside that projects.
