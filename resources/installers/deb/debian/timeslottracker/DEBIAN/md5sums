@@ -1,9 +1,0 @@
-4b0ba54d5d7e6646e52994ccc0e4f273  etc/default/timeslottracker
-60b8af39820301d304b59131bbea4b27  etc/timeslottracker/logging.properties
-57e73a9cf25c504d66ac0fba09e3367f  etc/timeslottracker/timeslottracker.properties
-6269d3a9e56124eacb71e7b6417486f6  usr/bin/tst
-f1e24057cc3a9818af792fc8211f1e5d  usr/lib/timeslottracker/tst.jar
-84bf2b91e44c007d7bc847fbb2511ebd  usr/share/applications/timeslottracker.desktop
-a909300c93c5fb9399e012462afcb1ac  usr/share/doc/timeslottracker/changelog.Debian.gz
-eb4d816e04abef9214306b6c6159f024  usr/share/doc/timeslottracker/changelog.gz
-a780b91aa9bdf21c43d69fca786149e1  usr/share/icons/hicolor/scalable/apps/tst.png
