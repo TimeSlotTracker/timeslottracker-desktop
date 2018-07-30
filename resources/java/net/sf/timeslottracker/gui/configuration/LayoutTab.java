@@ -77,6 +77,8 @@ class LayoutTab extends ConfigurationPanel {
       // nothing to do
     } catch (ClassNotFoundException e) {
       // nothing to do
+    } catch (NoClassDefFoundError e) {
+      // nothing to do
     }
     return null;
   }
