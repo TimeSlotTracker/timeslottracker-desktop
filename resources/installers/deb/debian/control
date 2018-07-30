@@ -7,5 +7,5 @@ Homepage: http://sourceforge.net/projects/timeslottracker/
 
 Package: timeslottracker
 Architecture: all
-Depends: sun-java6-jre | openjdk-6-jre | openjdk-7-jre | openjdk-8-jre | openjdk-9-jre
+Depends: openjdk-8-jre | openjdk-9-jre | openjdk-10-jre
 Description: Simple and useful Time Tracking tool written in java
