@@ -1,3 +1,6 @@
+2018-08-08  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Disabled SSL certificate checks
+
 2018-07-30  Glazachev Andrey <cnitsa@users.sourceforge.net>
 	* Move to java 8
 

@@ -17,10 +17,6 @@ import net.sf.timeslottracker.worktime.WorkTimeService;
 /**
  * An interface to main timetracker core module. It can be treated as a
  * "central point" of whole application.
- * 
- * @version File version: $Revision: 1126 $, $Date: 2009-05-16 08:53:21 +0700
- *          (Sat, 16 May 2009) $
- * @author Last change: $Author: cnitsa $
  */
 public interface TimeSlotTracker {
 
@@ -28,7 +24,7 @@ public interface TimeSlotTracker {
    * Returns actual data store, wherever it will be a XMLDataStore or some
    * DatabaseStore.
    * 
-   * @returns data-store used by TimeSlotTracker or null if there is no one in
+   * @return data-store used by TimeSlotTracker or null if there is no one in
    *          use.
    */
   DataSource getDataSource();

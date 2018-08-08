@@ -45,14 +45,10 @@ import org.apache.commons.codec.binary.Base64;
 
 /**
  * Implementation of Issue Tracker for Jira
- * 
+ *
  * <p>
  * JIRA (R) Issue tracking project management software
  * (http://www.atlassian.com/software/jira)
- * 
- * @version File version: $Revision: 1206 $, $Date: 2009-05-16 09:00:38 +0700
- *          (Sat, 16 May 2009) $
- * @author Last change: $Author: cnitsa $
  */
 public class JiraTracker implements IssueTracker {
 
@@ -126,12 +122,7 @@ public class JiraTracker implements IssueTracker {
         Configuration.JIRA_FILTER_URL_TEMPLATE,
         "{0}/sr/jira.issueviews:searchrequest-xml/{1}/SearchRequest-{1}.xml?tempMax=1000&{2}");
 
-    this.timeSlotTracker.addActionListener(new DataLoadedListener() {
-      @Override
-      public void actionPerformed(Action action) {
-        init();
-      }
-    });
+    this.timeSlotTracker.addActionListener((DataLoadedListener) action -> init());
   }
 
   public void add(final TimeSlot timeSlot) throws IssueTrackerException {
@@ -160,34 +151,29 @@ public class JiraTracker implements IssueTracker {
       duration = timeSlot.getTime();
     }
 
-    Runnable searchIssueTask = new Runnable() {
-      public void run() {
-        Issue issue = null;
-        try {
-          issue = getIssue(key);
-        } catch (IssueTrackerException e2) {
-          LOG.info(e2.getMessage());
-        }
-        if (issue == null) {
-          LOG.info("Nothing updated. Not found issue with key " + key);
-          return;
-        }
-
-        final String issueId = issue.getId();
-        Runnable updateWorklogTask = new Runnable() {
-          public void run() {
-            try {
-              addWorklog(timeSlot, key, issueId, statusAttribute,
-                  duration);
-            } catch (IOException e) {
-              LOG.warning("Error occured while updating jira worklog:"
-                  + e.getMessage());
-            }
-          }
-        };
-        executorService.execute(updateWorklogTask);
+    Runnable searchIssueTask = () -> {
+      Issue issue = null;
+      try {
+        issue = getIssue(key);
+      } catch (IssueTrackerException e2) {
+        LOG.info(e2.getMessage());
+      }
+      if (issue == null) {
+        LOG.info("Nothing updated. Not found issue with key " + key);
+        return;
       }
 
+      final String issueId = issue.getId();
+      Runnable updateWorklogTask = () -> {
+        try {
+          addWorklog(timeSlot, key, issueId, statusAttribute,
+              duration);
+        } catch (IOException e) {
+          LOG.warning("Error occured while updating jira worklog:"
+              + e.getMessage());
+        }
+      };
+      executorService.execute(updateWorklogTask);
     };
     executorService.execute(searchIssueTask);
   }
@@ -271,12 +257,8 @@ public class JiraTracker implements IssueTracker {
   @Override
   public void getFilterIssues(final String filterId, final IssueHandler handler)
       throws IssueTrackerException {
-    Runnable command = new Runnable() {
-
-      @Override
-      public void run() {
+      executorService.execute(() -> {
         try {
-
           // if not
           String urlString = MessageFormat.format(filterUrlTemplate,
               getBaseJiraUrl(), filterId, getAuthorizedParams());
@@ -324,9 +306,7 @@ public class JiraTracker implements IssueTracker {
         } catch (IOException e) {
           LOG.throwing("", "", e);
         }
-      }
-    };
-    executorService.execute(command);
+      });
   }
 
   public boolean isIssueTask(Task task) {

@@ -8,6 +8,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -60,6 +62,7 @@ import net.sf.timeslottracker.integrations.issuetracker.IssueTracker;
 import net.sf.timeslottracker.integrations.issuetracker.jira.JiraTracker;
 import net.sf.timeslottracker.monitoring.ScreenshotMonitoringTask;
 import net.sf.timeslottracker.updateversion.VersionManager;
+import net.sf.timeslottracker.utils.SSLUtils;
 import net.sf.timeslottracker.utils.StringUtils;
 import net.sf.timeslottracker.utils.SwingUtils;
 import net.sf.timeslottracker.utils.TimeUtils;
@@ -81,8 +84,6 @@ public class Starter extends JFrame implements TimeSlotTracker {
 
   /** logging using java.util.logging package * */
   private static final Logger LOG = Logger.getLogger("net.sf.timeslottracker");
-
-  private static FileHandler loggerFileHandler;
 
   private static TimeSlotTracker timeSlotTrackerInstance;
 
@@ -221,6 +222,13 @@ public class Starter extends JFrame implements TimeSlotTracker {
 
     userIdleDetector = new UserIdleDetector(this);
     userIdleDetector.start();
+
+    // disable https certificate check
+    try {
+      SSLUtils.disableSSL();
+    } catch (Exception e) {
+      errorLog(e);
+    }
   }
 
   private void installMonitoringTimer() {
@@ -541,8 +549,8 @@ public class Starter extends JFrame implements TimeSlotTracker {
   public static void main(String[] args) {
     LOG.setLevel(Level.ALL);
     try {
-      loggerFileHandler = new FileHandler("%t" + File.separatorChar
-          + "timeslottracker.%g.log");
+      FileHandler loggerFileHandler = new FileHandler("%t" + File.separatorChar
+              + "timeslottracker.%g.log");
       loggerFileHandler.setFormatter(new SimpleFormatter());
       LOG.addHandler(loggerFileHandler);
     } catch (Exception ex) {
