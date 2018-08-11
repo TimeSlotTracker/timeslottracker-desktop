@@ -1,11 +1,14 @@
+2018-08-11  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Change: Jira(R) filter issue parser moved to SAX
+	* New: added subtask field to issue
 
 ============================== version 1.3.15 ==============================
 
 2018-08-08  Glazachev Andrey <cnitsa@users.sourceforge.net>
-	* Disabled SSL certificate checks
+	* Change: Disabled SSL certificate checks
 
 2018-07-30  Glazachev Andrey <cnitsa@users.sourceforge.net>
-	* Move to java 8
+	* Change: Move to java 8
 
 ============================== version 1.3.14 ==============================
 

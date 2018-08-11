@@ -8,17 +8,16 @@ import net.sf.timeslottracker.integrations.issuetracker.Issue;
  * <p>
  * JIRA (R) Issue tracking project management software
  * (http://www.atlassian.com/software/jira)
- * 
- * @version File version: $Revision: 998 $, $Date: 2009-05-16 08:53:21 +0700
- *          (Sat, 16 May 2009) $
- * @author Last change: $Author: cnitsa $
  */
 public class JiraIssue implements Issue {
-  private final String key;
 
-  private final String id;
+  private String key;
+  private String id;
+  private String summary;
+  private boolean subTask;
 
-  private final String summary;
+  public JiraIssue() {
+  }
 
   public JiraIssue(String key, String id, String summary) {
     this.key = key;
@@ -30,17 +29,44 @@ public class JiraIssue implements Issue {
     return id;
   }
 
+  public void setId(String id) {
+    this.id = id;
+  }
+
   public String getKey() {
     return key;
+  }
+
+  public void setKey(String key) {
+    this.key = key;
   }
 
   public String getSummary() {
     return summary;
   }
 
+  public void setSummary(String summary) {
+    this.summary = summary;
+  }
+
+  @Override
+  public boolean isSubTask() {
+    return subTask;
+  }
+
+  public void setSubTask(boolean subTask) {
+    this.subTask = subTask;
+  }
+
   @Override
   public String toString() {
-    return key + " : " + summary;
+    StringBuilder builder = new StringBuilder();
+
+    if (isSubTask()) {
+      builder.append("- ");
+    }
+
+    return builder.append(key).append(" ").append(summary).toString();
   }
 
   @Override

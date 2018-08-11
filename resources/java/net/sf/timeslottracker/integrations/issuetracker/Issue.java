@@ -22,4 +22,10 @@ public interface Issue {
    * @return issue summary
    */
   String getSummary();
+
+  /**
+   * @return признак подзадачи
+   */
+  boolean isSubTask();
+
 }

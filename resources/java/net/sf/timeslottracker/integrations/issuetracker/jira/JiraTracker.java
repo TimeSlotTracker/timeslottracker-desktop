@@ -3,6 +3,7 @@ package net.sf.timeslottracker.integrations.issuetracker.jira;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -14,17 +15,16 @@ import java.net.URLEncoder;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import net.sf.timeslottracker.core.Action;
 import net.sf.timeslottracker.core.Configuration;
@@ -42,6 +42,9 @@ import net.sf.timeslottracker.integrations.issuetracker.IssueTrackerException;
 import net.sf.timeslottracker.integrations.issuetracker.IssueWorklogStatusType;
 import net.sf.timeslottracker.utils.StringUtils;
 import org.apache.commons.codec.binary.Base64;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Implementation of Issue Tracker for Jira
@@ -59,7 +62,6 @@ public class JiraTracker implements IssueTracker {
 
   private static final Logger LOG = Logger
       .getLogger(JiraTracker.class.getName());
-
   private static String decodeString(String s) {
     Pattern p = Pattern.compile("&#([\\d]+);");
     Matcher m = p.matcher(s);
@@ -79,6 +81,8 @@ public class JiraTracker implements IssueTracker {
 
     return key.trim().toUpperCase();
   }
+
+  private final SAXParserFactory saxFactory;
 
   private final ExecutorService executorService;
 
@@ -123,6 +127,8 @@ public class JiraTracker implements IssueTracker {
         "{0}/sr/jira.issueviews:searchrequest-xml/{1}/SearchRequest-{1}.xml?tempMax=1000&{2}");
 
     this.timeSlotTracker.addActionListener((DataLoadedListener) action -> init());
+
+    this.saxFactory = SAXParserFactory.newInstance();
   }
 
   public void add(final TimeSlot timeSlot) throws IssueTrackerException {
@@ -259,51 +265,70 @@ public class JiraTracker implements IssueTracker {
       throws IssueTrackerException {
       executorService.execute(() -> {
         try {
-          // if not
           String urlString = MessageFormat.format(filterUrlTemplate,
               getBaseJiraUrl(), filterId, getAuthorizedParams());
           URL url = new URL(urlString);
           URLConnection connection = url.openConnection();
-          try {
+          SAXParser saxParser = saxFactory.newSAXParser();
 
-            BufferedReader br = new BufferedReader(
-                new InputStreamReader(connection.getInputStream()));
+          try (InputStream inputStream = connection.getInputStream()) {
+            saxParser.parse(inputStream, new DefaultHandler() {
+              StringBuilder stringBuilder = null;
+              JiraIssue jiraIssue;
 
-            String line = br.readLine();
-            String id = null;
-            String key = null;
-            String summary = null;
-            while (line != null && !handler.stopProcess()) {
-              line = decodeString(line);
-              Matcher matcherId = patternIssueId.matcher(line);
-              if (id == null && matcherId.find()) {
-                id = matcherId.group(1);
-                key = matcherId.group(2);
-                continue;
+              @Override
+              public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+                if (handler.stopProcess()) {
+                  throw new SAXException("Cancel xml processing");
+                }
+
+                switch (qName) {
+                  case "summary":
+                    stringBuilder = new StringBuilder();
+                    break;
+                  case "item":
+                    jiraIssue = new JiraIssue();
+                    break;
+                  case "key":
+                    jiraIssue.setId(attributes.getValue("id"));
+                    stringBuilder = new StringBuilder();
+                    break;
+                  case "parent":
+                    jiraIssue.setSubTask(true);
+                    break;
+                }
               }
 
-              Matcher matcherSummary = patternSummary.matcher(line);
-              if (summary == null && matcherSummary.find()) {
-                summary = matcherSummary.group(1);
-                continue;
+              @Override
+              public void characters(char[] ch, int start, int length) throws SAXException {
+                if (stringBuilder != null) {
+                  stringBuilder.append(new String(ch, start, length));
+                }
               }
 
-              if (id != null && summary != null) {
-                JiraIssue jiraIssue = new JiraIssue(key, id, summary);
-                handler.handle(jiraIssue);
-                id = key = summary = null;
+              @Override
+              public void endElement(String uri, String localName, String qName) throws SAXException {
+                switch (qName) {
+                  case "item":
+                    try {
+                      handler.handle(jiraIssue);
+                    } catch (IssueTrackerException e) {
+                      LOG.throwing("", "", e);
+                    }
+                    jiraIssue = null;
+                    break;
+                  case "summary":
+                    jiraIssue.setSummary(stringBuilder.toString());
+                    break;
+                  case "key":
+                    jiraIssue.setKey(stringBuilder.toString());
+                    break;
+                }
+                stringBuilder = null;
               }
-
-              line = br.readLine();
-            }
-          } finally {
-            connection.getInputStream().close();
+            });
           }
-        } catch (FileNotFoundException e) {
-          LOG.throwing("", "", e);
-        } catch (IssueTrackerException e) {
-          LOG.throwing("", "", e);
-        } catch (IOException e) {
+        } catch (Exception e) {
           LOG.throwing("", "", e);
         }
       });
