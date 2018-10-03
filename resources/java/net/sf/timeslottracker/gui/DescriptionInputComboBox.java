@@ -119,7 +119,7 @@ public class DescriptionInputComboBox extends JComboBox {
   }
 
   private Vector<String> getHistory(Task actualTask) {
-    Set<String> history = new HashSet<String>();
+    Vector<String> history = new Vector<>();
 
     List<TimeSlot> timeSlots = new ArrayList<TimeSlot>(
         actualTask.getTimeslots());
@@ -135,12 +135,10 @@ public class DescriptionInputComboBox extends JComboBox {
       }
     }
 
-    Vector<String> sorterHistory = new Vector(history);
-    Collections.sort(sorterHistory);
-    return sorterHistory;
+    return history;
   }
 
-  private void add(String description, Set<String> history) {
+  private void add(String description, Vector<String> history) {
     if (StringUtils.isBlank(description)) {
       return;
     }
