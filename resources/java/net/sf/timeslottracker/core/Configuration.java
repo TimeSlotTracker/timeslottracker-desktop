@@ -40,6 +40,7 @@ public class Configuration {
   public static final String HOURS_PER_WORKING_DAY = "time.duration.format.hoursPerWorkingDay";
   public static final String TIME_DURATION_FORMAT = "time.duration.format";
   public static final String WEEK_FIRST_DAY = "week.first.day";
+  public static final String FIRST_TIMESLOT_SHIFT = "time.first.timeslot.shift";
 
   public static final String DATASOURCE_DIRECTORY = "dataSource.data.directory";
   public static final String DATASOURCE_DIRECTORY_CURRENT_FOLDER = "dataSource.data.directory.currentFolder";

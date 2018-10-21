@@ -55,11 +55,13 @@ class GeneralTab extends ConfigurationPanel {
 
     addCoreCombo(Configuration.WEEK_FIRST_DAY, daysOfWeek);
 
+    addCoreLine(Configuration.FIRST_TIMESLOT_SHIFT);
+
     List<ConfigValue> durationFormats = Arrays.asList(new ConfigValue[] {
         new StringConfigValue("days, hours, minutes"),
         new StringConfigValue("hours, minutes") });
 
     addCoreCombo(Configuration.TIME_DURATION_FORMAT, durationFormats);
-
   }
+
 }

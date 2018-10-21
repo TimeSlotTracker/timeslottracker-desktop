@@ -1,12 +1,5 @@
 package net.sf.timeslottracker.gui;
 
-import net.sf.timeslottracker.data.Task;
-import net.sf.timeslottracker.gui.taskmodel.TaskModel;
-import net.sf.timeslottracker.gui.taskmodel.TaskModelFactory;
-import net.sf.timeslottracker.gui.taskmodel.TaskValue;
-import net.sf.timeslottracker.utils.SwingUtils;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +13,15 @@ import java.awt.event.WindowEvent;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.swing.*;
+
+import net.sf.timeslottracker.core.Configuration;
+import net.sf.timeslottracker.data.Task;
+import net.sf.timeslottracker.gui.taskmodel.TaskModel;
+import net.sf.timeslottracker.gui.taskmodel.TaskModelFactory;
+import net.sf.timeslottracker.gui.taskmodel.TaskValue;
+import net.sf.timeslottracker.utils.SwingUtils;
+
 /**
  * TimeSlot create dialog
  * <p>
@@ -28,9 +30,9 @@ import java.util.Date;
  * <p>
  * Also contains task selection. After updated description history.
  *
- * @version File version: $Revision: 1204 $, $Date: 2009-08-04 19:26:06 +0700
- *          (Tue, 04 Aug 2009) $
  * @author Last change: $Author: cnitsa $
+ * @version File version: $Revision: 1204 $, $Date: 2009-08-04 19:26:06 +0700
+ * (Tue, 04 Aug 2009) $
  */
 @SuppressWarnings("serial")
 public class TimeSlotInputDialog extends AbstractSimplePanelDialog {
@@ -192,9 +194,13 @@ public class TimeSlotInputDialog extends AbstractSimplePanelDialog {
         inputComboBox);
 
     // adding user selected start time
-    boolean readonly = true;
-    startDate = new DatetimeEditPanel(layoutManager, readonly, true, true);
-    startDate.setDatetime(Calendar.getInstance().getTime());
+    int shiftMinutes = layoutManager.getTimeSlotTracker().getActiveTimeSlot() == null ? getConfiguration().getInteger(
+        Configuration.FIRST_TIMESLOT_SHIFT, 0) : 0;
+    Calendar calendar = Calendar.getInstance();
+    calendar.add(Calendar.MINUTE, -shiftMinutes);
+    Date time = calendar.getTime();
+    startDate = new DatetimeEditPanel(layoutManager, true, true, true);
+    startDate.setDatetime(time);
     panel.addRow(coreString("editDialog.timeslot.start.date.name") + ":",
         startDate);
 
