@@ -204,7 +204,7 @@ public class JiraTracker implements IssueTracker {
       String urlString = MessageFormat.format(issueUrlTemplate,
           getBaseJiraUrl(), key, getAuthorizedParams());
       URL url = new URL(urlString);
-      URLConnection connection = url.openConnection();
+      URLConnection connection = getUrlConnection(url);
       try {
         BufferedReader br = new BufferedReader(
             new InputStreamReader(connection.getInputStream()));
@@ -268,7 +268,7 @@ public class JiraTracker implements IssueTracker {
           String urlString = MessageFormat.format(filterUrlTemplate,
               getBaseJiraUrl(), filterId, getAuthorizedParams());
           URL url = new URL(urlString);
-          URLConnection connection = url.openConnection();
+          URLConnection connection = getUrlConnection(url);
           SAXParser saxParser = saxFactory.newSAXParser();
 
           try (InputStream inputStream = connection.getInputStream()) {
@@ -348,16 +348,9 @@ public class JiraTracker implements IssueTracker {
                           long duration)
       throws IOException {
     URL url = new URL(getBaseJiraUrl() + getAddWorklogPath(issueId));
-    URLConnection connection = url.openConnection();
+    URLConnection connection = getUrlConnection(url);
     if (connection instanceof HttpURLConnection) {
       HttpURLConnection httpConnection = (HttpURLConnection) connection;
-
-      // preparing connection
-      if (version.equals(JIRA_VERSION_6)) {
-        String basicAuth = "Basic " + new String(new Base64()
-            .encode((getLogin() + ":" + getPassword()).getBytes()));
-        httpConnection.setRequestProperty("Authorization", basicAuth);
-      }
       httpConnection.setRequestMethod("POST");
       httpConnection.setDoInput(true);
       httpConnection.setDoOutput(true);
@@ -432,6 +425,17 @@ public class JiraTracker implements IssueTracker {
 
   private String getAuthorizedParams() {
     return "os_username=" + getLogin() + getPair("os_password", getPassword());
+  }
+
+  private URLConnection getUrlConnection(URL url) throws IOException {
+    URLConnection connection = url.openConnection();
+    // preparing connection
+    if (version.equals(JIRA_VERSION_6)) {
+      String basicAuth = "Basic " + new String(new Base64()
+          .encode((getLogin() + ":" + getPassword()).getBytes()));
+      connection.setRequestProperty("Authorization", basicAuth);
+    }
+    return connection;
   }
 
   private String getBaseJiraUrl() {
