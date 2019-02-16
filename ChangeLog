@@ -1,3 +1,6 @@
+
+============================== version 1.3.19 ==============================
+
 2019-02-16  Glazachev Andrey <cnitsa@users.sourceforge.net>
 	* Change: jira 6/7 support: added http basic authentication for all queries (thanks Francesco)
 
