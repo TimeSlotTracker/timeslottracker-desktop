@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -37,8 +38,14 @@ import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
+import org.apache.fop.apps.FOUserAgent;
+import org.apache.fop.apps.Fop;
+import org.apache.fop.apps.FopFactory;
+import org.apache.fop.apps.MimeConstants;
 
 import net.sf.timeslottracker.core.Configuration;
 import net.sf.timeslottracker.core.TimeSlotTracker;
@@ -371,21 +378,32 @@ public class ReportConfiguration extends JDialog {
       Transformer trans = transformerFactory.newTransformer(xsltSource);
       prepareFilters(trans);
 
-      String encoding = (String) trans
-          .getParameter(EncodingFilter.PARAMETER_REPORT_OUTPUT_ENCODING);
-      if (encoding == null) {
-        encoding = "UTF-8";
-      }
+      if (report.getType() == ReportType.PDF) {
+          FopFactory fopFactory = FopFactory.newInstance(resultFile.toURI());
+          FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
+          foUserAgent.setAuthor("TimeSlotTracker");
+          foUserAgent.setTitle(chooseFileResult.getName());
+          Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, new FileOutputStream(resultFile));
+          Result res = new SAXResult(fop.getDefaultHandler());
+          trans.transform(xmlSource, res);
+      } else {
 
-      PrintWriter printWriter = null;
-      try {
-        printWriter = new PrintWriter(new BufferedWriter(
-            new OutputStreamWriter(new FileOutputStream(resultFile), encoding)));
-        Result result = new StreamResult(printWriter);
-        trans.transform(xmlSource, result);
-      } finally {
-        if (printWriter != null) {
-          printWriter.close();
+        String encoding = (String) trans
+            .getParameter(EncodingFilter.PARAMETER_REPORT_OUTPUT_ENCODING);
+        if (encoding == null) {
+            encoding = "UTF-8";
+        }
+
+        PrintWriter printWriter = null;
+        try {
+            printWriter = new PrintWriter(new BufferedWriter(
+                new OutputStreamWriter(new FileOutputStream(resultFile), encoding)));
+            Result result = new StreamResult(printWriter);
+            trans.transform(xmlSource, result);
+        } finally {
+            if (printWriter != null) {
+            printWriter.close();
+            }
         }
       }
 

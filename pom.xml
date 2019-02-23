@@ -66,6 +66,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- pdf generation -->
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>fop</artifactId>
+            <version>2.2</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -92,6 +99,7 @@
                     <include>**/*.xml</include>
                     <include>**/*.css</include>
                     <include>**/*.dtd</include>
+                    <include>**/*.xsl</include>
                 </includes>
             </resource>
             <resource>
