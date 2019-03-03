@@ -27,6 +27,13 @@
             <version>2.14.1</version>
         </dependency>
 
+        <!-- pdf generation -->
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>fop</artifactId>
+            <version>2.2</version>
+        </dependency>
+
         <!-- jgoodies -->
         <dependency>
             <groupId>com.jgoodies</groupId>
@@ -64,13 +71,6 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
-        </dependency>
-
-        <!-- pdf generation -->
-        <dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>fop</artifactId>
-            <version>2.2</version>
         </dependency>
 
     </dependencies>
