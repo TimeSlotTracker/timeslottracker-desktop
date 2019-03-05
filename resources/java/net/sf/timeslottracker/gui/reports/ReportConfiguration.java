@@ -41,9 +41,11 @@ import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
+import org.apache.fop.apps.FopFactoryBuilder;
 import org.apache.fop.apps.MimeConstants;
 
 import net.sf.timeslottracker.core.Configuration;
@@ -378,7 +380,14 @@ public class ReportConfiguration extends JDialog {
       prepareFilters(trans);
 
       if (report.getType() == ReportType.PDF) {
-          FopFactory fopFactory = FopFactory.newInstance(resultFile.toURI());
+          // FopFactory fopFactory = FopFactory.newInstance(resultFile.toURI());
+          DefaultConfigurationBuilder cfgBuilder = new DefaultConfigurationBuilder();
+          InputStream configFile = ReportConfiguration.class.getResourceAsStream("/xslt/fop_conf.xml");
+          org.apache.avalon.framework.configuration.Configuration cfg = cfgBuilder.build(configFile);
+          //File configFile = new File("fop.xconf");
+          //org.apache.avalon.framework.configuration.Configuration cfg = cfgBuilder.buildFromFile(configFile);
+          FopFactoryBuilder fopFactoryBuilder = new FopFactoryBuilder(resultFile.toURI()).setConfiguration(cfg);
+          FopFactory fopFactory = fopFactoryBuilder.build();
           FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
           foUserAgent.setAuthor("TimeSlotTracker");
           foUserAgent.setTitle(chooseFileResult.getName());

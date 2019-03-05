@@ -12,7 +12,7 @@
   <xsl:template match="dayByDayLoop"/>
 
   <xsl:template match="task">
-        <fo:root line-stacking-strategy="font-height">
+        <fo:root line-stacking-strategy="font-height" font-family="MS Gothic, FreeSans, TakaoPGothic, Pagul">
             <fo:layout-master-set>
                 <fo:simple-page-master master-name="report"
                                        page-height="210mm" page-width="297mm" >
@@ -64,7 +64,7 @@
                         &#160;<xsl:value-of select="$stopDate" />
                     </xsl:if>
                     <fo:block/>
-                    <fo:table border="1" width="100%" table-layout="fixed" >
+                    <fo:table width="100%" table-layout="fixed" >
                         <fo:table-column column-number="1" column-width="20%" />
                         <fo:table-column column-number="2" column-width="10%" />
                         <fo:table-column column-number="3" column-width="70%" />
