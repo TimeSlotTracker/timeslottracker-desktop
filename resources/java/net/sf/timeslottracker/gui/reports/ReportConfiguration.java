@@ -121,7 +121,7 @@ public class ReportConfiguration extends JDialog {
   private final Vector<Filter> filters;
 
   /** special instances to give the ability to know if there is any set date * */
-  public DateFilter dateFilter;
+  private DateFilter dateFilter;
 
   private final TimeSlotTracker timeSlotTracker;
 
@@ -437,7 +437,6 @@ public class ReportConfiguration extends JDialog {
       timeSlotTracker.errorLog(errorMsg);
       timeSlotTracker.errorLog(e);
       reportErrorMessage = errorMsg;
-      return;
     } finally {
       if (createTemporaryXmlFile && xmlFile != null) {
         xmlFile.delete(); // delete the temporary xml data file
