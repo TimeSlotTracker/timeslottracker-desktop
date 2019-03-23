@@ -1,18 +1,17 @@
 <?xml version="1.0"?>
 <!-- 
-# File version: $Revision: 1.4 $,  $Date: 2006-12-25 22:54:12 $
-#  Last change: $Author: zgibek $
+# File version: $Revision: 1.0 $,  $Date: 2019-03-19 19:54:12 $
+#  Last change: $Author: frotondella $
 -->
 
-<xsl:stylesheet version="1.0"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" >
-<xsl:output encoding="UTF-8" omit-xml-declaration="yes"/>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" >
+<xsl:output encoding="UTF-8"/>
 
   <xsl:template match="dictionary"/>
   <xsl:template match="dayByDayLoop"/>
 
   <xsl:template match="task">
-        <fo:root line-stacking-strategy="font-height" font-family="MS Gothic, FreeSans, TakaoPGothic, Pagul">
+        <fo:root line-stacking-strategy="font-height" font-family="MS Gothic, FreeSans, NotoSansGothic-Regular, UnBatang, TakaoPGothic, Pagul">
             <fo:layout-master-set>
                 <fo:simple-page-master master-name="report"
                                        page-height="210mm" page-width="297mm" >
@@ -24,23 +23,23 @@
                 </fo:simple-page-master>
             </fo:layout-master-set>
             <fo:declarations>
-            <x:xmpmeta xmlns:x="adobe:ns:meta/">
-                <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-                    <rdf:Description rdf:about="" xmlns:dc="http://purl.org/dc/elements/1.1/">
-                        <xsl:variable name="reportTitle" select="'noName'"/>
-                        <xsl:choose>
-                            <xsl:when test="$reportTitle='noName'">
-                                <dc:title><xsl:value-of select="name" /></dc:title>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <dc:title><xsl:value-of select="$reportTitle" /></dc:title>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                        <dc:creator><xsl:value-of select="/TimeSlotTracker_Report/dictionary/report-created-by"/></dc:creator>
-                    </rdf:Description>
-                </rdf:RDF>
-            </x:xmpmeta>
-</fo:declarations>
+                <x:xmpmeta xmlns:x="adobe:ns:meta/">
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+                        <rdf:Description rdf:about="" xmlns:dc="http://purl.org/dc/elements/1.1/">
+                            <xsl:variable name="reportTitle" select="'noName'"/>
+                            <xsl:choose>
+                                <xsl:when test="$reportTitle='noName'">
+                                    <dc:title><xsl:value-of select="name" /></dc:title>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <dc:title><xsl:value-of select="$reportTitle" /></dc:title>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <dc:creator><xsl:value-of select="/TimeSlotTracker_Report/dictionary/report-created-by"/></dc:creator>
+                        </rdf:Description>
+                    </rdf:RDF>
+                </x:xmpmeta>
+            </fo:declarations>
 
             <fo:page-sequence force-page-count="no-force" master-reference="report"
                               white-space-collapse="false">
@@ -49,10 +48,13 @@
                     <xsl:variable name="startDate" select="'noDate'" />
                     <xsl:variable name="stopDate" select="'noDate'" />
                     <xsl:if test="not($reportTitle='noName')">
-                        <fo:block ><xsl:value-of select="$reportTitle" /></fo:block><fo:block/>
-                        <!-- choosen from dictionary, in english: "Time spent on all tasks" -->
-                        <xsl:value-of select="/TimeSlotTracker_Report/dictionary/duration-spent-on-all-taks"/>: 
-                        <xsl:value-of select="./duration/durationWithChildren"/>
+                        <fo:block >
+                            <xsl:value-of select="$reportTitle" />
+                        </fo:block>
+                        <fo:block/>
+                            <!-- choosen from dictionary, in english: "Time spent on all tasks" -->
+                            <xsl:value-of select="/TimeSlotTracker_Report/dictionary/duration-spent-on-all-taks"/>: 
+                            <xsl:value-of select="./duration/durationWithChildren"/>
                         <fo:block/>
                     </xsl:if>
 
@@ -116,7 +118,7 @@
             </fo:page-sequence>
         </fo:root>
   </xsl:template>               
-                 
+
   <xsl:template match="timeslot">
       <fo:table-row keep-together.within-page="always" >
           <fo:table-cell xsl:use-attribute-sets="cell.000">

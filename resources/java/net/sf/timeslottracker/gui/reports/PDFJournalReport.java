@@ -44,7 +44,6 @@ public class PDFJournalReport extends AbstractReport {
 
   public Source getXsltSource(String dataDirectory) {
     String filename = "/xslt/journal.xsl";
-    return new StreamSource(
-        TXTJournalReport.class.getResourceAsStream(filename));
+    return new StreamSource(PDFJournalReport.class.getResourceAsStream(filename));
   }
 }

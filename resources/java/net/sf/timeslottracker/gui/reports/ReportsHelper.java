@@ -49,6 +49,8 @@ public class   ReportsHelper {
     reports.add(new TXTJournalReport(layoutManager));
     reports.add(new TXTJournalMonthlyReport(layoutManager));
     reports.add(separator);
+    reports.add(new PDFSummaryReport(layoutManager));
+    reports.add(new PDFDetailReport(layoutManager));
     reports.add(new PDFJournalReport(layoutManager));
     reports.add(separator);
     reports.add(new CustomReport(layoutManager));
