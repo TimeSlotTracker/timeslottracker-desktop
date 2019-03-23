@@ -33,20 +33,10 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
-import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.sax.SAXResult;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
-import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
-import org.apache.fop.apps.FOUserAgent;
-import org.apache.fop.apps.Fop;
-import org.apache.fop.apps.FopFactory;
-import org.apache.fop.apps.FopFactoryBuilder;
-import org.apache.fop.apps.MimeConstants;
 
 import net.sf.timeslottracker.core.Configuration;
 import net.sf.timeslottracker.core.TimeSlotTracker;
@@ -379,41 +369,7 @@ public class ReportConfiguration extends JDialog {
       Transformer trans = transformerFactory.newTransformer(xsltSource);
       prepareFilters(trans);
 
-      if (report.getType() == ReportType.PDF) {
-          // FopFactory fopFactory = FopFactory.newInstance(resultFile.toURI());
-          DefaultConfigurationBuilder cfgBuilder = new DefaultConfigurationBuilder();
-          InputStream configFile = ReportConfiguration.class.getResourceAsStream("/xslt/fop_conf.xml");
-          org.apache.avalon.framework.configuration.Configuration cfg = cfgBuilder.build(configFile);
-          //File configFile = new File("fop.xconf");
-          //org.apache.avalon.framework.configuration.Configuration cfg = cfgBuilder.buildFromFile(configFile);
-          FopFactoryBuilder fopFactoryBuilder = new FopFactoryBuilder(resultFile.toURI()).setConfiguration(cfg);
-          FopFactory fopFactory = fopFactoryBuilder.build();
-          FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
-          foUserAgent.setAuthor("TimeSlotTracker");
-          foUserAgent.setTitle(chooseFileResult.getName());
-          Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, new FileOutputStream(resultFile));
-          Result res = new SAXResult(fop.getDefaultHandler());
-          trans.transform(xmlSource, res);
-      } else {
-
-        String encoding = (String) trans
-            .getParameter(EncodingFilter.PARAMETER_REPORT_OUTPUT_ENCODING);
-        if (encoding == null) {
-            encoding = "UTF-8";
-        }
-
-        PrintWriter printWriter = null;
-        try {
-            printWriter = new PrintWriter(new BufferedWriter(
-                new OutputStreamWriter(new FileOutputStream(resultFile), encoding)));
-            Result result = new StreamResult(printWriter);
-            trans.transform(xmlSource, result);
-        } finally {
-            if (printWriter != null) {
-            printWriter.close();
-            }
-        }
-      }
+      report.transform(resultFile, xmlSource, trans);
 
       // copy css for html reports
       String method = trans.getOutputProperties().getProperty("method");

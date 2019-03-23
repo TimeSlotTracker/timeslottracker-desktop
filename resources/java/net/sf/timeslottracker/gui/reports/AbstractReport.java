@@ -1,16 +1,28 @@
 package net.sf.timeslottracker.gui.reports;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 
 import javax.swing.JComponent;
+import javax.xml.transform.Result;
 import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.stream.StreamResult;
 
 import net.sf.timeslottracker.gui.LayoutManager;
+import net.sf.timeslottracker.gui.reports.filters.EncodingFilter;
 import net.sf.timeslottracker.gui.reports.filters.Filter;
 
 /**
  * An abstract class every report have to extend.
- * 
+ *
  * @version File version: $Revision: 888 $, $Date: 2009-05-16 08:53:21 +0700
  *          (Sat, 16 May 2009) $
  * @author Last change: $Author: cnitsa $
@@ -62,7 +74,7 @@ public abstract class AbstractReport {
   /**
    * Returns a xslt source. You can decide - take it from the jar file or open
    * it from any file.
-   * 
+   *
    * @param dataDirectory
    *          a path (with slash|backslash) of data files
    */
@@ -74,7 +86,7 @@ public abstract class AbstractReport {
    * into result xml.
    * <p>
    * It allows you to specify some specific options for your report.
-   * 
+   *
    * @return <code>Collection</code> object with objects implementing
    *         <code>Filter</code> interface. <code>null</code> if there is no
    *         extra filters (default value).
@@ -82,4 +94,26 @@ public abstract class AbstractReport {
   public Collection<Filter> getExtraFilters() {
     return null;
   }
+
+  public void transform(File resultFile, Source xmlSource, Transformer trans) throws Exception {
+    String encoding = (String) trans
+        .getParameter(EncodingFilter.PARAMETER_REPORT_OUTPUT_ENCODING);
+    if (encoding == null) {
+      encoding = "UTF-8";
+    }
+
+    PrintWriter printWriter = null;
+    try {
+      printWriter = new PrintWriter(new BufferedWriter(
+          new OutputStreamWriter(new FileOutputStream(resultFile), encoding)));
+      Result result = new StreamResult(printWriter);
+      trans.transform(xmlSource, result);
+    } finally {
+      if (printWriter != null) {
+        printWriter.close();
+      }
+    }
+  }
+
+
 }
