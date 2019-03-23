@@ -48,10 +48,13 @@ public class   ReportsHelper {
     reports.add(new TXTDetailReport(layoutManager));
     reports.add(new TXTJournalReport(layoutManager));
     reports.add(new TXTJournalMonthlyReport(layoutManager));
-    reports.add(separator);
-    reports.add(new PDFSummaryReport(layoutManager));
-    reports.add(new PDFDetailReport(layoutManager));
-    reports.add(new PDFJournalReport(layoutManager));
+      try {
+        Class<?> aClass = Class.forName("net.sf.timeslottracker.gui.reports.PDFJournalReport");
+        reports.add(separator);
+        Object o = aClass.getConstructor(LayoutManager.class).newInstance(layoutManager);
+        reports.add((AbstractReport) o);
+      } catch(Exception e ) {
+      }
     reports.add(separator);
     reports.add(new CustomReport(layoutManager));
   }
