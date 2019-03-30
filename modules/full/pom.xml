@@ -132,7 +132,7 @@
                         </transformer>
                     </transformers>
                     <finalName>tst-full</finalName>
-                    <minimizeJar>false</minimizeJar>
+                    <minimizeJar>true</minimizeJar>
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
@@ -146,7 +146,7 @@
                             </excludes>
                         </filter>
                         <filter>
-                            <artifact>net.sf.timeslottracker:*</artifact>
+                            <artifact>net.sf:timeslottracker-core</artifact>
                             <includes>
                                 <include>**</include>
                             </includes>
@@ -159,6 +159,18 @@
                         </filter>
                         <filter>
                             <artifact>com.jgoodies:jgoodies-common</artifact>
+                            <includes>
+                                <include>**</include>
+                            </includes>
+                        </filter>
+                        <filter>
+                            <artifact>org.mnode.ical4j:*</artifact>
+                            <includes>
+                                <include>**</include>
+                            </includes>
+                        </filter>
+                        <filter>
+                            <artifact>org.apache.lucene:*</artifact>
                             <includes>
                                 <include>**</include>
                             </includes>

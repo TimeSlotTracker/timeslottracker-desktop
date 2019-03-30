@@ -171,7 +171,7 @@
                         </transformer>
                     </transformers>
                     <finalName>tst</finalName>
-                    <minimizeJar>false</minimizeJar>
+                    <minimizeJar>true</minimizeJar>
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
