@@ -21,7 +21,7 @@ import net.sf.timeslottracker.gui.reports.filters.TimeFormatFilter;
  */
 public class TimesheetTableReport extends AbstractReport {
 
-  public static enum Version {
+  public enum Version {
     NO_DESCRIPTION, WITH_DESCRIPTION
   };
 
@@ -32,7 +32,7 @@ public class TimesheetTableReport extends AbstractReport {
   public TimesheetTableReport(LayoutManager layoutManager, Version version) {
     super(layoutManager);
     this.version = version;
-    filters = new Vector<Filter>();
+    filters = new Vector<>();
     filters.add(new DateColumnLookFilter(layoutManager));
     filters.add(new TimeFormatFilter(layoutManager));
   }

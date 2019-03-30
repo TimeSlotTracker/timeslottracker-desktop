@@ -1,3 +1,6 @@
+2019-03-30  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* Fix: #86 Missing Rows HTML Timesheet Table with Descriptions
+
 2019-03-23  Glazachev Andrey <cnitsa@users.sourceforge.net>
 	* New: TST splitted with two versions: core (small), full (with pdf reports)
 

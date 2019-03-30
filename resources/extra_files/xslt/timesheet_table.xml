@@ -10,10 +10,11 @@
 <xsl:param name="startDate" select="'noDate'" />
 <xsl:param name="stopDate" select="'noDate'" />
 <xsl:param name="dateColumnLook" select="'yyyy-MM-dd'" />
+<xsl:param name="reportOutputEncoding" select="'UTF-8'"/>
 <xsl:param name="durationFormat" select="'hh:mm'" />
 
 <xsl:key name="taskIdKey" match="task" use="@taskId" />
-  
+
   <xsl:template match="/">
     <xsl:apply-templates select="/TimeSlotTracker_Report/dictionary" />
     <xsl:apply-templates select="/TimeSlotTracker_Report/task" />
@@ -24,7 +25,7 @@
   <xsl:template match="task">
     <html>
       <head>
-      <!-- title is choosen from parametr "reportTitle" or set as a first task's name -->
+      <!-- title is choosen from parameter "reportTitle" or set as a first task's name -->
       <title>
         <xsl:choose>
           <xsl:when test="$reportTitle='noName'">

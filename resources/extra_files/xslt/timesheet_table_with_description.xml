@@ -13,9 +13,7 @@
 <xsl:param name="reportOutputEncoding" select="'UTF-8'"/>
 <xsl:param name="durationFormat" select="'hh:mm'" />
 
-<xsl:key name="taskIdKey" match="task" use="@taskId" />
-<xsl:key name="descriptionKey" match="task/timeslot/description" use="." />
-
+<xsl:key name="taskIdDescriptionKey" match="task/timeslot/description" use="concat(../../@taskId,'-',string(.))" />
 
   <xsl:template match="/">
     <xsl:apply-templates select="/TimeSlotTracker_Report/dictionary" />
@@ -27,7 +25,7 @@
   <xsl:template match="task">
     <html>
       <head>
-      <!-- title is choosen from parametr "reportTitle" or set as a first task's name -->
+      <!-- title is choosen from parameter "reportTitle" or set as a first task's name -->
       <title>
         <xsl:choose>
           <xsl:when test="$reportTitle='noName'">
@@ -74,8 +72,8 @@
         </tr>
         <!-- end header of report -->
 
-        <!-- body of report,  -->
-        <xsl:apply-templates select="//task/timeslot/description[generate-id(../..)=generate-id(key('taskIdKey',../../@taskId)[1]) and generate-id(.)=generate-id(key('descriptionKey',.)[1]) and ../../timeslot]" 
+        <!-- body of report -->
+        <xsl:apply-templates select="//task/timeslot/description[generate-id(.)=generate-id(key('taskIdDescriptionKey',concat(../../@taskId,'-',string(.)))[1]) and ../../timeslot]"
                              mode="timeslots" />
         <!-- end body of report -->
 
