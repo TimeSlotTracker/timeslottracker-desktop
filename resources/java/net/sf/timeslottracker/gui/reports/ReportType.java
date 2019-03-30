@@ -7,7 +7,7 @@ package net.sf.timeslottracker.gui.reports;
  * 2009) $ Last change: $Author: cnitsa $
  */
 public enum ReportType {
-  CSV("CSV"), HTML("HTML"), TXT("TXT"), USER("*");
+  CSV("CSV"), HTML("HTML"), PDF("PDF"), TXT("TXT"), USER("*");
 
   private final String description;
 

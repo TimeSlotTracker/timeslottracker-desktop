@@ -1,3 +1,8 @@
+2019-03-23  Glazachev Andrey <cnitsa@users.sourceforge.net>
+	* New: TST splitted with two versions: core (small), full (with pdf reports)
+
+2019-03-07  Francesco Rotondella
+	* New: added journal pdf report
 
 ============================== version 1.3.20 ==============================
 

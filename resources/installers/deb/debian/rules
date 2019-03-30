@@ -17,7 +17,7 @@ install: build
 	dh_testroot
 	dh_prep
 	dh_installdirs
-	dh_install ../../../target/tst.jar ./usr/lib/timeslottracker
+	dh_install ../../../modules/core/target/tst.jar ./usr/lib/timeslottracker
 	cp ../../icons/users/clock48.png ./debian/timeslottracker/usr/share/icons/hicolor/scalable/apps/tst.png
 	dh_install debian/bin/tst ./usr/bin/
 	dh_install debian/etc/timeslottracker.properties ./etc/timeslottracker/

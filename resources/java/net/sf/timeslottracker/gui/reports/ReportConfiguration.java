@@ -33,11 +33,9 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
-import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import net.sf.timeslottracker.core.Configuration;
@@ -113,7 +111,7 @@ public class ReportConfiguration extends JDialog {
   private final Vector<Filter> filters;
 
   /** special instances to give the ability to know if there is any set date * */
-  public DateFilter dateFilter;
+  private DateFilter dateFilter;
 
   private final TimeSlotTracker timeSlotTracker;
 
@@ -371,23 +369,7 @@ public class ReportConfiguration extends JDialog {
       Transformer trans = transformerFactory.newTransformer(xsltSource);
       prepareFilters(trans);
 
-      String encoding = (String) trans
-          .getParameter(EncodingFilter.PARAMETER_REPORT_OUTPUT_ENCODING);
-      if (encoding == null) {
-        encoding = "UTF-8";
-      }
-
-      PrintWriter printWriter = null;
-      try {
-        printWriter = new PrintWriter(new BufferedWriter(
-            new OutputStreamWriter(new FileOutputStream(resultFile), encoding)));
-        Result result = new StreamResult(printWriter);
-        trans.transform(xmlSource, result);
-      } finally {
-        if (printWriter != null) {
-          printWriter.close();
-        }
-      }
+      report.transform(resultFile, xmlSource, trans);
 
       // copy css for html reports
       String method = trans.getOutputProperties().getProperty("method");
@@ -411,7 +393,6 @@ public class ReportConfiguration extends JDialog {
       timeSlotTracker.errorLog(errorMsg);
       timeSlotTracker.errorLog(e);
       reportErrorMessage = errorMsg;
-      return;
     } finally {
       if (createTemporaryXmlFile && xmlFile != null) {
         xmlFile.delete(); // delete the temporary xml data file

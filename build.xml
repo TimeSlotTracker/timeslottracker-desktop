@@ -12,9 +12,11 @@
     <property name="user.homedir" value="${env.HOME}"/>
 
     <property name="deploy" location="target"/>
-    <property name="deb.deploy" location="resources/installers/deb/debian/tmp"/>
-    <property name="deployfile.name" value="tst.jar"/>
-    <property name="deployfile" location="${deploy}/${deployfile.name}"/>
+    <property name="deploy.deb" location="resources/installers/deb/debian/tmp"/>
+    <property name="target.core" location="modules/core/target"/>
+    <property name="target.full" location="modules/full/target"/>
+    <property name="jar.artifact" location="modules/core/target/tst.jar"/>
+    <property name="jar.artifact.full" location="modules/full/target/tst-full.jar"/>
     <property name="extra_files" value="resources/extra_files"/>
     <property name="release.docs" location="resources/for-release"/>
     <property name="nsis" value="makensis"/>
@@ -50,7 +52,7 @@
         <property name="release.version" value="${ant.project.name}-${release}"/>
         <property name="release.dir" location="${deploy}/release/${release.version}"/>
         <property name="package.jar" value="${release.dir}/${release.version}.jar"/>
-        <property name="package.src" value="${release.dir}/${release.version}-sources.jar"/>
+        <property name="package.jar.full" value="${release.dir}/${release.version}-full.jar"/>
         <property name="package.deb.file" value="timeslottracker_${release}_all.deb"/>
         <property name="package.deb" value="${release.dir}/${package.deb.file}"/>
         <property name="package.exe.file" value="${release.version}-setup.exe"/>
@@ -66,7 +68,7 @@
 
     -->
 
-    <target name="pack" depends="init" description="Make jar package">
+    <target name="pack" depends="init" description="Make jar packages">
         <exec dir="." executable="mvn">
             <arg line="clean package"/>
         </exec>
@@ -77,7 +79,18 @@
         <condition property="jvmArgs" value="-Xdock:name=TimeSlotTracker -Xmx256M" else="-Xmx256M">
             <os family="mac"/>
         </condition>
-        <java jar="${deployfile}" fork="true">
+        <java jar="${jar.artifact}" fork="true">
+            <sysproperty key="debug" value="yes"/>
+            <jvmarg value="${jvmArgs}"/>
+        </java>
+    </target>
+
+    <target name="run-full" depends="pack" description="Run application (full version)">
+        <antcall target="backup-data"/>
+        <condition property="jvmArgs" value="-Xdock:name=TimeSlotTracker -Xmx256M" else="-Xmx256M">
+            <os family="mac"/>
+        </condition>
+        <java jar="${jar.artifact.full}" fork="true">
             <sysproperty key="debug" value="yes"/>
             <jvmarg value="${jvmArgs}"/>
         </java>
@@ -92,8 +105,10 @@
     </target>
 
     <target name="clean" description="Clean build artifacts">
+        <delete dir="${target.core}"/>
+        <delete dir="${target.full}"/>
         <delete dir="${deploy}"/>
-        <delete dir="${deb.deploy}"/>
+        <delete dir="${deploy.deb}"/>
     </target>
 
     <target name="rebuild" depends="clean, run" description="Rebuild and run"/>
@@ -147,12 +162,6 @@
         <antcall target="deb"/>
         <!--antcall target="exe" /-->
 
-        <!-- process source jar -->
-        <exec dir="." executable="mvn">
-            <arg line="source:jar"/>
-        </exec>
-        <copy todir="${release.dir}" file="${deploy}/timeslottracker-${release}-sources.jar"/>
-
         <filter token="version" value="${release}"/>
         <copy todir="${release.dir}" filtering="true">
             <fileset dir="${release.docs}"/>
@@ -160,7 +169,10 @@
 
         <!-- prepare jar archive -->
         <copy tofile="${package.jar}">
-            <fileset file="${deployfile}"/>
+            <fileset file="${jar.artifact}"/>
+        </copy>
+        <copy tofile="${package.jar.full}">
+            <fileset file="${jar.artifact.full}"/>
         </copy>
 
         <copy todir="${release.dir}">
@@ -175,10 +187,9 @@
         <echo message="  password: password"/>
         <echo message="remote dir: u/us/username/uploads"/>
         <echo message="      mode: binary"/>
-        <echo message="     file1: ${package.src}"/>
-        <echo message="     file2: ${package.jar}"/>
-        <echo message="     file3: ${package.deb}"/>
-        <echo message="     file4: ${package.exe}"/>
+        <echo message="     file1: ${package.jar}"/>
+        <echo message="     file2: ${package.deb}"/>
+        <echo message="     file3: ${package.exe}"/>
 
         <echo message=""/>
         <echo message="Also remember to create new group for this version: "/>
@@ -197,6 +208,9 @@
 
         <echo>File: ${package.jar}</echo>
         <scp file="${package.jar}" todir="${scp.url}" password="${userpass}" trust="true"/>
+
+        <echo>File: ${package.jar.full}</echo>
+        <scp file="${package.jar.full}" todir="${scp.url}" password="${userpass}" trust="true"/>
 
         <echo>File: ${package.deb}</echo>
         <scp file="${package.deb}" todir="${scp.url}" password="${userpass}" trust="true"/>
