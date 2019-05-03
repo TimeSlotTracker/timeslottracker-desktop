@@ -28,8 +28,7 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5.3</version>
                 <configuration>
-                    <arguments>-DskipTests</arguments>
-                    <goals>test</goals>
+                    <goals>install</goals>
                     <tagNameFormat>rel-@{project.version}</tagNameFormat>
                     <preparationGoals>antrun:run</preparationGoals>
                 </configuration>
