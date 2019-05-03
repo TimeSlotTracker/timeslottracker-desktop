@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Created-By: Andrey Glazachev (cnitsa)
+Created-By: Andrey Glazachev
 Main-Class: net.sf.timeslottracker.Starter
 Class-Path: tst.jar
 

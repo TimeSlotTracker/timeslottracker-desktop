@@ -1,7 +1,7 @@
 -- ===========================================================================
       Revision: $Revision: 920 $
           Date: $Date: 2009-08-22 12:41:06 +0800 (Сб, 22 авг 2009) $
-   Last change: $Author: cnitsa $
+   Last change: $Author: aglazachev $
 -- ===========================================================================
 
 * Application should connect to data via sth like a DataInterface. 
