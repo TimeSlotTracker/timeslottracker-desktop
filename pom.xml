@@ -29,9 +29,8 @@
                 <version>2.5.3</version>
                 <configuration>
                     <goals>install</goals>
-                    <completionGoals>install</completionGoals>
                     <tagNameFormat>rel-@{project.version}</tagNameFormat>
-                    <preparationGoals>antrun:run</preparationGoals>
+                    <preparationGoals>install antrun:run</preparationGoals>
                 </configuration>
             </plugin>
             <plugin>
