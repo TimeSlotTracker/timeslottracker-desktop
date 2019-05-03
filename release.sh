@@ -1,3 +1,6 @@
+#!/bin/bash
+set -e
+
 mvn release:clean release:prepare release:perform
 
 cp ./build.properties ./target/checkout
