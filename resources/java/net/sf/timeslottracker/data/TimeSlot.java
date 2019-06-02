@@ -147,9 +147,7 @@ public interface TimeSlot extends Cloneable {
 
   /**
    * Clone current timeSlot
-   * <p>
-   * id of timeSlot is transient. It has no importance.
-   * 
+   *
    * @return timeSlot object
    */
   Object clone();

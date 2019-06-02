@@ -170,19 +170,19 @@ public class XmlTimeSlot implements TimeSlot {
   }
 
   public Object clone() {
-    try {
-      XmlTimeSlot clone = (XmlTimeSlot) super.clone();
+    XmlTask task = (XmlTask) getTask();
+    TimeSlotTracker tracker = task.getTimeSlotTracker();
+    XmlDataSource dataSource = (XmlDataSource) tracker.getDataSource();
 
-      Vector<Attribute> newAttributes = new Vector<Attribute>();
-      for (Attribute attribute : clone.attributes) {
-        newAttributes.add(new Attribute(attribute.getAttributeType(), attribute
-            .get()));
-      }
-      clone.attributes = newAttributes;
-      return clone;
-    } catch (CloneNotSupportedException e) {
-      throw new AssertionError(e);
+    XmlTimeSlot clone = (XmlTimeSlot) dataSource.createTimeSlot(task, getStartDate(), getStopDate(), getDescription());
+
+    Vector<Attribute> newAttributes = new Vector<>();
+    for (Attribute attribute : clone.attributes) {
+      newAttributes.add(new Attribute(attribute.getAttributeType(), attribute
+          .get()));
     }
+    clone.attributes = newAttributes;
+    return clone;
   }
 
   private boolean equalsTimeSlot(TimeSlot activeTimeSlot) {
@@ -198,4 +198,5 @@ public class XmlTimeSlot implements TimeSlot {
   public boolean isPaused() {
     return getStartDate() == null;
   }
+
 }

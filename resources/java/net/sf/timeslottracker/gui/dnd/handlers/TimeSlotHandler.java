@@ -33,9 +33,9 @@ public class TimeSlotHandler {
   /**
    * Make transferable by timeslot
    * 
-   * @param timeSlot
-   *          timeslot
-   * @return transferable for timeslot
+   * @param timeSlots
+   *          collection of timeslot
+   * @return transferable for timeslots
    */
   public TimeSlotSelection wrap(Collection<TimeSlot> timeSlots) {
     return new TimeSlotSelection(new TimeSlotTransferData(timeSlots));
@@ -153,11 +153,11 @@ public class TimeSlotHandler {
       TimeSlot newTimeSlot;
       if (transferData.isMarkedAsMoving()) {
         newTimeSlot = timeSlot;
+        targetTask.addTimeslot(newTimeSlot);
       } else {
         newTimeSlot = (TimeSlot) timeSlot.clone();
       }
       newTimeSlots.add(newTimeSlot);
-      targetTask.addTimeslot(newTimeSlot);
     }
 
     // at third - refreshing gui
