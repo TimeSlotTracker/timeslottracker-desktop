@@ -1,3 +1,5 @@
+2019-10-05  Glazachev Andrey <aglazachev@users.sourceforge.net>
+	* Fix: #90 "Copy of copy" of timeslots copies the former timeslot
 
 ============================== version 1.3.21 ==============================
 
