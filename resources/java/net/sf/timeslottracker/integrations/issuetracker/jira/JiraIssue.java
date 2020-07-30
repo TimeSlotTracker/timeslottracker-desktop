@@ -14,6 +14,7 @@ public class JiraIssue implements Issue {
   private String key;
   private String id;
   private String summary;
+  private String assignee;
   private boolean subTask;
 
   public JiraIssue() {
@@ -49,6 +50,14 @@ public class JiraIssue implements Issue {
     this.summary = summary;
   }
 
+  public String getAssignee() {
+    return assignee;
+  }
+
+  public void setAssignee(String assignee) {
+    this.assignee = assignee;
+  }
+
   @Override
   public boolean isSubTask() {
     return subTask;
@@ -66,7 +75,7 @@ public class JiraIssue implements Issue {
       builder.append("- ");
     }
 
-    return builder.append(key).append(" ").append(summary).toString();
+    return builder.append(key).append(" ").append(summary).append(" @ ").append(assignee).toString();
   }
 
   @Override

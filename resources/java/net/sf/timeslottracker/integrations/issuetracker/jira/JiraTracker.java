@@ -62,6 +62,7 @@ public class JiraTracker implements IssueTracker {
 
   private static final Logger LOG = Logger
       .getLogger(JiraTracker.class.getName());
+
   private static String decodeString(String s) {
     Pattern p = Pattern.compile("&#([\\d]+);");
     Matcher m = p.matcher(s);
@@ -293,6 +294,9 @@ public class JiraTracker implements IssueTracker {
                     jiraIssue.setId(attributes.getValue("id"));
                     stringBuilder = new StringBuilder();
                     break;
+                  case "assignee":
+                    stringBuilder = new StringBuilder();
+                    break;
                   case "parent":
                     jiraIssue.setSubTask(true);
                     break;
@@ -319,6 +323,9 @@ public class JiraTracker implements IssueTracker {
                     break;
                   case "summary":
                     jiraIssue.setSummary(stringBuilder.toString());
+                    break;
+                  case "assignee":
+                    jiraIssue.setAssignee(stringBuilder.toString());
                     break;
                   case "key":
                     jiraIssue.setKey(stringBuilder.toString());

@@ -24,6 +24,11 @@ public interface Issue {
   String getSummary();
 
   /**
+   * @return issue assignee
+   */
+  String getAssignee();
+
+  /**
    * @return признак подзадачи
    */
   boolean isSubTask();

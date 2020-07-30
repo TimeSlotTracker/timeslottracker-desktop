@@ -1,59 +1,69 @@
 package net.sf.timeslottracker.gui;
 
-import java.awt.GridBagConstraints;
+import edu.emory.mathcs.backport.java.util.Collections;
+import net.sf.timeslottracker.integrations.issuetracker.Issue;
+import net.sf.timeslottracker.utils.StringUtils;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-
-import net.sf.timeslottracker.integrations.issuetracker.Issue;
-import net.sf.timeslottracker.utils.StringUtils;
-
 /**
  * Dialog for selecting tracker's issue
- * 
- * @version File version: $Revision: 1.23 $, $Date: 2007/04/07 03:59:30 $
- * @author Last change: $Author: cnitsa $
  */
 public class NewIssueDialog extends AbstractSimplePanelDialog {
+
+  public static final int KEY_COLUMN_INDEX = 0;
 
   private class ApplyAction implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent action) {
-      Object selectedValue = list.getSelectedValue();
-      Issue issue = selectedValue == null ? findIssue() : (Issue) selectedValue;
-      selectedKey = issue == null ? keyField.getText() : issue.getKey();
-
+      if (table.getSelectedRowCount() > 0) {
+        for (int selectedRow : table.getSelectedRows()) {
+          selectedKeys.add(table.getModel().getValueAt(selectedRow, KEY_COLUMN_INDEX).toString());
+        }
+      }
       dispose();
     }
   }
 
-  private final JTextField keyField = new JTextField();
-
-  private final JList list = new JList();
-
-  private String selectedKey;
-
+  private final JTable table;
+  private final DefaultTableModel issueModel;
+  private final String[] columns = new String[]{"Key", "Summary", "Assignee"};
+  private final JTextField filterField = new JTextField();
   private JButton applyButton;
 
-  private List<Issue> issues = new ArrayList<Issue>();
-
-  private DefaultListModel issueModel = new DefaultListModel();
+  private final java.util.List<String> selectedKeys = new ArrayList<>();
 
   public NewIssueDialog(LayoutManager layoutManager) {
     super(layoutManager, layoutManager
         .getCoreString("issueTracker.newissuedialog.title"));
+    issueModel = new DefaultTableModel() {
+      @Override
+      public String getColumnName(int column) {
+        return columns[column];
+      }
+
+      @Override
+      public int getColumnCount() {
+        return columns.length;
+      }
+    };
+    table = new JTable(issueModel);
+    table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    table.setColumnSelectionAllowed(false);
+    TableColumnModel columnModel = table.getColumnModel();
+    columnModel.getColumn(KEY_COLUMN_INDEX).setMaxWidth(110);
+    columnModel.getColumn(1).setMaxWidth(450);
+    columnModel.getColumn(2).setMaxWidth(250);
   }
 
   @Override
@@ -63,42 +73,41 @@ public class NewIssueDialog extends AbstractSimplePanelDialog {
 
   @Override
   protected void fillDialogPanel(DialogPanel panel) {
-    panel.addRow(coreString("issueTracker.newissuedialog.selectField"),
-        keyField);
-    keyField.addKeyListener(new KeyAdapter() {
+    panel.addRow(coreString("issueTracker.newissuedialog.selectField"), filterField);
+    filterField.addKeyListener(new KeyAdapter() {
 
       @Override
       public void keyReleased(KeyEvent e) {
-        Issue issue = findIssue();
-        if (issue == null) {
-          list.clearSelection();
+        int foundRow = findRowByFilter();
+        if (foundRow < 0) {
+          table.clearSelection();
         } else {
-          list.setSelectedValue(issue, true);
+          table.getSelectionModel().setSelectionInterval(foundRow, foundRow);
         }
       }
 
     });
 
-    list.setModel(issueModel);
-    list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-    panel.fillToEnd(new JScrollPane(list));
+    panel.fillToEnd(new JScrollPane(table));
   }
 
-  private Issue findIssue() {
-    String selected = keyField.getText();
-    if (StringUtils.isBlank(selected)) {
-      return null;
+  private int findRowByFilter() {
+    String filterFieldText = filterField.getText();
+    if (StringUtils.isBlank(filterFieldText)) {
+      return -1;
     }
 
-    String trimmedValue = selected.trim().toLowerCase();
-    for (Issue issue : issues) {
-      if (issue.getKey().toLowerCase().contains(trimmedValue)
-          || issue.getSummary().toLowerCase().contains(trimmedValue)) {
-        return issue;
+    String filterTestNormalized = filterFieldText.trim().toLowerCase();
+    int rowCount = table.getModel().getRowCount();
+    for (int i = 0; i < rowCount; i++) {
+      for (int j = 0; j < columns.length; j++) {
+        String valueAt = table.getModel().getValueAt(i, j).toString();
+        if (valueAt.toLowerCase().contains(filterTestNormalized)) {
+          return i;
+        }
       }
     }
-    return null;
+    return -1;
   }
 
   @Override
@@ -117,10 +126,10 @@ public class NewIssueDialog extends AbstractSimplePanelDialog {
   }
 
   /**
-   * @return get selected issue key
+   * @return get selected issue keys
    */
-  public String getKey() {
-    return selectedKey;
+  public List<String> getKeys() {
+    return selectedKeys;
   }
 
   @Override
@@ -130,7 +139,7 @@ public class NewIssueDialog extends AbstractSimplePanelDialog {
     applyButton.addActionListener(new ApplyAction());
     applyButton.setIcon(icon("save"));
 
-    return Arrays.asList(applyButton);
+    return Collections.singletonList(applyButton);
   }
 
   @Override
@@ -142,8 +151,7 @@ public class NewIssueDialog extends AbstractSimplePanelDialog {
    * Add issue in dialog
    */
   public void add(Issue issue) {
-    issueModel.addElement(issue);
-    issues.add(issue);
+    issueModel.addRow(new Object[]{issue.getKey(), (issue.isSubTask() ? "-" : "") + issue.getSummary(), issue.getAssignee()});
   }
 
 }

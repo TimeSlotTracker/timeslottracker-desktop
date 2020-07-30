@@ -1,68 +1,30 @@
 package net.sf.timeslottracker.gui.layouts.classic.tasks;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.net.URI;
-import java.text.MessageFormat;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
+import net.sf.timeslottracker.core.Action;
+import net.sf.timeslottracker.core.ActionListener;
+import net.sf.timeslottracker.core.Configuration;
+import net.sf.timeslottracker.data.*;
+import net.sf.timeslottracker.filters.HiddenTaskFilter;
+import net.sf.timeslottracker.gui.LayoutManager;
+import net.sf.timeslottracker.gui.*;
+import net.sf.timeslottracker.gui.actions.FilterTimeSlotsAction;
+import net.sf.timeslottracker.gui.layouts.classic.SwitchViewCombobox;
+import net.sf.timeslottracker.gui.reports.ReportContext;
+import net.sf.timeslottracker.integrations.issuetracker.*;
+import net.sf.timeslottracker.utils.SwingUtils;
 
-import javax.swing.AbstractAction;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
+import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.event.TreeWillExpandListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.ExpandVetoException;
-import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
-
-import net.sf.timeslottracker.core.Action;
-import net.sf.timeslottracker.core.ActionListener;
-import net.sf.timeslottracker.core.Configuration;
-import net.sf.timeslottracker.data.Attribute;
-import net.sf.timeslottracker.data.DataSource;
-import net.sf.timeslottracker.data.Task;
-import net.sf.timeslottracker.data.TaskChangedListener;
-import net.sf.timeslottracker.data.TimeSlot;
-import net.sf.timeslottracker.filters.HiddenTaskFilter;
-import net.sf.timeslottracker.gui.DialogPanel;
-import net.sf.timeslottracker.gui.LayoutManager;
-import net.sf.timeslottracker.gui.NewIssueDialog;
-import net.sf.timeslottracker.gui.TaskEditDialog;
-import net.sf.timeslottracker.gui.TasksInterface;
-import net.sf.timeslottracker.gui.actions.FilterTimeSlotsAction;
-import net.sf.timeslottracker.gui.layouts.classic.SwitchViewCombobox;
-import net.sf.timeslottracker.gui.reports.ReportContext;
-import net.sf.timeslottracker.integrations.issuetracker.Issue;
-import net.sf.timeslottracker.integrations.issuetracker.IssueHandler;
-import net.sf.timeslottracker.integrations.issuetracker.IssueKeyAttributeType;
-import net.sf.timeslottracker.integrations.issuetracker.IssueTracker;
-import net.sf.timeslottracker.integrations.issuetracker.IssueTrackerException;
-import net.sf.timeslottracker.utils.StringUtils;
-import net.sf.timeslottracker.utils.SwingUtils;
+import javax.swing.tree.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.net.URI;
+import java.text.MessageFormat;
+import java.util.List;
+import java.util.*;
 
 /**
  * Module with JTree to present tasks in a tree.
@@ -338,16 +300,13 @@ public class TasksTree extends JPanel implements TasksInterface,
   }
 
   public void addTaskFromIssueTracker() {
-    Issue issue;
     try {
-
       final IssueTracker issueTracker = layoutManager.getTimeSlotTracker()
           .getIssueTracker();
       final String filterId = layoutManager.getTimeSlotTracker()
           .getConfiguration().getString(Configuration.JIRA_FILTER, "-1");
 
       final NewIssueDialog newIssueDialog = new NewIssueDialog(layoutManager);
-
       new SwingWorker<List<Issue>, Issue>() {
         @Override
         protected List<Issue> doInBackground() throws Exception {
@@ -393,29 +352,35 @@ public class TasksTree extends JPanel implements TasksInterface,
         }
 
       }.execute();
-
       newIssueDialog.activate();
 
-      String key = newIssueDialog.getKey();
-      if (StringUtils.isBlank(key)) {
+      List<String> keys = newIssueDialog.getKeys();
+      if (keys.isEmpty()) {
         return;
       }
-      if (!issueTracker.isValidKey(key)) {
-        JOptionPane.showMessageDialog(layoutManager.getTimeSlotTracker()
-            .getRootFrame(), layoutManager
-            .getCoreString("issueTracker.issue.notValidNumber"), layoutManager
-            .getCoreString("alert.warning.title"), JOptionPane.WARNING_MESSAGE);
-        return;
-      }
+      for (String key : keys) {
+        if (!issueTracker.isValidKey(key)) {
+          JOptionPane.showMessageDialog(layoutManager.getTimeSlotTracker()
+                  .getRootFrame(), layoutManager
+                  .getCoreString("issueTracker.issue.notValidNumber"), layoutManager
+                  .getCoreString("alert.warning.title"), JOptionPane.WARNING_MESSAGE);
+          return;
+        }
+        Issue issue = issueTracker.getIssue(key);
+        if (issue == null) {
+          JOptionPane.showMessageDialog(layoutManager.getTimeSlotTracker()
+                  .getRootFrame(), layoutManager
+                  .getCoreString("issueTracker.issue.notFound"), layoutManager
+                  .getCoreString("alert.warning.title"), JOptionPane.WARNING_MESSAGE);
+          return;
+        }
 
-      issue = issueTracker.getIssue(key);
-
-      if (issue == null) {
-        JOptionPane.showMessageDialog(layoutManager.getTimeSlotTracker()
-            .getRootFrame(), layoutManager
-            .getCoreString("issueTracker.issue.notFound"), layoutManager
-            .getCoreString("alert.warning.title"), JOptionPane.WARNING_MESSAGE);
-        return;
+        Task selected = getSelected();
+        add(issue.getSummary(), Collections.singletonList(new Attribute(IssueKeyAttributeType
+                .getInstance(), issue.getKey())));
+        if (selected != null) {
+          selectTask(selected);
+        }
       }
     } catch (IssueTrackerException e1) {
       layoutManager.getTimeSlotTracker().errorLog(e1);
@@ -424,11 +389,7 @@ public class TasksTree extends JPanel implements TasksInterface,
           layoutManager.getCoreString("issueTracker.issue.foundError"),
           e1.getMessage()), layoutManager.getCoreString("alert.error.title"),
           JOptionPane.ERROR_MESSAGE);
-      return;
     }
-
-    add(issue.getSummary(), Arrays.asList(new Attribute(IssueKeyAttributeType
-        .getInstance(), issue.getKey())));
   }
 
   public void selectTask(Task task, boolean expand) {
