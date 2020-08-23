@@ -1,6 +1,5 @@
 package net.sf.timeslottracker.gui;
 
-import edu.emory.mathcs.backport.java.util.Collections;
 import net.sf.timeslottracker.integrations.issuetracker.Issue;
 import net.sf.timeslottracker.utils.StringUtils;
 
@@ -14,6 +13,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
