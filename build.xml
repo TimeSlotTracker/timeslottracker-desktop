@@ -177,7 +177,7 @@
 
         <copy todir="${release.dir}">
             <fileset file="${deploy}/${package.deb.file}"/>
-            <fileset file="${deploy}/${package.exe.file}"/>
+<!--            <fileset file="${deploy}/${package.exe.file}"/>-->
         </copy>
 
         <echo message=""/>
@@ -189,7 +189,7 @@
         <echo message="      mode: binary"/>
         <echo message="     file1: ${package.jar}"/>
         <echo message="     file2: ${package.deb}"/>
-        <echo message="     file3: ${package.exe}"/>
+<!--        <echo message="     file3: ${package.exe}"/>-->
 
         <echo message=""/>
         <echo message="Also remember to create new group for this version: "/>
