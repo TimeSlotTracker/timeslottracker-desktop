@@ -1,50 +1,35 @@
 package net.sf.timeslottracker.integrations.issuetracker.jira;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
+import net.sf.timeslottracker.core.Action;
+import net.sf.timeslottracker.core.Configuration;
+import net.sf.timeslottracker.core.TimeSlotTracker;
+import net.sf.timeslottracker.data.*;
+import net.sf.timeslottracker.gui.AbstractSimplePanelDialog;
+import net.sf.timeslottracker.gui.DialogPanel;
+import net.sf.timeslottracker.gui.LayoutManager;
+import net.sf.timeslottracker.integrations.issuetracker.*;
+import net.sf.timeslottracker.utils.StringUtils;
+import org.apache.commons.codec.binary.Base64;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
+import javax.swing.*;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.*;
+import java.net.*;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.swing.*;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import net.sf.timeslottracker.core.Action;
-import net.sf.timeslottracker.core.Configuration;
-import net.sf.timeslottracker.core.TimeSlotTracker;
-import net.sf.timeslottracker.data.Attribute;
-import net.sf.timeslottracker.data.DataLoadedListener;
-import net.sf.timeslottracker.data.Task;
-import net.sf.timeslottracker.data.TimeSlot;
-import net.sf.timeslottracker.data.TimeSlotChangedListener;
-import net.sf.timeslottracker.integrations.issuetracker.Issue;
-import net.sf.timeslottracker.integrations.issuetracker.IssueHandler;
-import net.sf.timeslottracker.integrations.issuetracker.IssueKeyAttributeType;
-import net.sf.timeslottracker.integrations.issuetracker.IssueTracker;
-import net.sf.timeslottracker.integrations.issuetracker.IssueTrackerException;
-import net.sf.timeslottracker.integrations.issuetracker.IssueWorklogStatusType;
-import net.sf.timeslottracker.utils.StringUtils;
-import org.apache.commons.codec.binary.Base64;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Implementation of Issue Tracker for Jira
@@ -479,16 +464,13 @@ public class JiraTracker implements IssueTracker {
   }
 
   private String getPassword() {
-    String password = this.timeSlotTracker.getConfiguration()
-        .getString(Configuration.JIRA_PASSWORD, null);
+    String password = this.timeSlotTracker.getConfiguration().getString(Configuration.JIRA_PASSWORD, null);
     if (!StringUtils.isBlank(password)) {
       return password;
     }
 
     if (StringUtils.isBlank(sessionPassword)) {
-      sessionPassword = JOptionPane
-          .showInputDialog(timeSlotTracker.getRootFrame(), timeSlotTracker
-              .getString("issueTracker.credentialsInputDialog.password"));
+      new EnterPasswordDialog(timeSlotTracker.getLayoutManager()).activate();
     }
 
     return sessionPassword;
@@ -544,4 +526,39 @@ public class JiraTracker implements IssueTracker {
         });
   }
 
+  private class EnterPasswordDialog extends AbstractSimplePanelDialog {
+    private final JPasswordField passwordField = new JPasswordField();
+
+    public EnterPasswordDialog(LayoutManager layoutManager) {
+      super(layoutManager, layoutManager.getTimeSlotTracker().getString("issueTracker.credentialsInputDialog.password"));
+    }
+
+    @Override
+    protected void fillDialogPanel(DialogPanel panel) {
+      panel.addRow(passwordField);
+      this.setModal(true);
+    }
+
+    @Override
+    protected Collection<JButton> getButtons() {
+      JButton processButton = new JButton("OK");
+      processButton.addActionListener(e -> {
+        sessionPassword = new String(passwordField.getPassword());
+        EnterPasswordDialog.this.dispose();
+      });
+      processButton.setIcon(icon("save"));
+
+      return Collections.singletonList(processButton);
+    }
+
+    @Override
+    protected int getDefaultHeight() {
+      return 110;
+    }
+
+    @Override
+    protected int getDefaultWidth() {
+      return 300;
+    }
+  }
 }

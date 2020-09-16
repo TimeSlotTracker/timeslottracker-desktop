@@ -1,3 +1,7 @@
+2020-09-16  Glazachev Andrey <aglazachev@users.sourceforge.net>
+	* New: jira password dialog: text field replaced with password field (with mask)
+
+
 2020-07-30  Glazachev Andrey <aglazachev@users.sourceforge.net>
 	* New: jira issue list converted to table, added assignee field, added multiply issue select
 
