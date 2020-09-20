@@ -17,6 +17,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import javax.swing.*;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import java.awt.*;
 import java.io.*;
 import java.net.*;
 import java.text.MessageFormat;
@@ -470,7 +471,7 @@ public class JiraTracker implements IssueTracker {
     }
 
     if (StringUtils.isBlank(sessionPassword)) {
-      new EnterPasswordDialog(timeSlotTracker.getLayoutManager()).activate();
+      new EnterPasswordDialog(timeSlotTracker.getLayoutManager(), timeSlotTracker.getRootFrame()).activate();
     }
 
     return sessionPassword;
@@ -529,14 +530,13 @@ public class JiraTracker implements IssueTracker {
   private class EnterPasswordDialog extends AbstractSimplePanelDialog {
     private final JPasswordField passwordField = new JPasswordField();
 
-    public EnterPasswordDialog(LayoutManager layoutManager) {
-      super(layoutManager, layoutManager.getTimeSlotTracker().getString("issueTracker.credentialsInputDialog.password"));
+    public EnterPasswordDialog(LayoutManager layoutManager, Frame owner) {
+      super(layoutManager, owner, layoutManager.getTimeSlotTracker().getString("issueTracker.credentialsInputDialog.password"), true);
     }
 
     @Override
     protected void fillDialogPanel(DialogPanel panel) {
       panel.addRow(passwordField);
-      this.setModal(true);
     }
 
     @Override

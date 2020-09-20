@@ -1,6 +1,8 @@
+2020-09-20  Glazachev Andrey <aglazachev@users.sourceforge.net>
+	* Change: jira issue table: enter key now closes the dialog (with the selected row/issue)
+
 2020-09-16  Glazachev Andrey <aglazachev@users.sourceforge.net>
 	* New: jira password dialog: text field replaced with password field (with mask)
-
 
 2020-07-30  Glazachev Andrey <aglazachev@users.sourceforge.net>
 	* New: jira issue list converted to table, added assignee field, added multiply issue select

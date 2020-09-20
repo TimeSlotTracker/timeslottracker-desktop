@@ -60,6 +60,13 @@ public class NewIssueDialog extends AbstractSimplePanelDialog {
     table = new JTable(issueModel);
     table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     table.setColumnSelectionAllowed(false);
+    table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "Enter");
+    table.getActionMap().put("Enter", new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent ae) {
+        applyButton.doClick();
+      }
+    });
     TableColumnModel columnModel = table.getColumnModel();
     columnModel.getColumn(KEY_COLUMN_INDEX).setMaxWidth(110);
     columnModel.getColumn(1).setMaxWidth(450);

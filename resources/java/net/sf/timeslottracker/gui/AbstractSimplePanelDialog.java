@@ -1,8 +1,6 @@
 package net.sf.timeslottracker.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -51,6 +49,12 @@ public abstract class AbstractSimplePanelDialog extends JDialog {
 
   public AbstractSimplePanelDialog(LayoutManager layoutManager, String title) {
     super(layoutManager.getTimeSlotTracker().getRootFrame(), title, true);
+
+    this.layoutManager = layoutManager;
+  }
+
+  public AbstractSimplePanelDialog(LayoutManager layoutManager, Frame owner, String title, boolean modal) {
+    super(owner, title, modal);
 
     this.layoutManager = layoutManager;
   }
