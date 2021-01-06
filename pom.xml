@@ -7,7 +7,7 @@
     <packaging>pom</packaging>
 
     <scm>
-        <developerConnection>scm:git:ssh://git.code.sf.net/p/timeslottracker/app</developerConnection>
+        <developerConnection>scm:git:ssh://git@github.com/TimeSlotTracker/timeslotracker-desktop.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
@@ -28,7 +28,7 @@
                 <version>2.5.3</version>
                 <configuration>
                     <goals>install</goals>
-                    <tagNameFormat>rel-@{project.version}</tagNameFormat>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
                     <preparationGoals>install antrun:run</preparationGoals>
                 </configuration>
             </plugin>
