@@ -207,13 +207,13 @@
         <echo>Scp to ${scp.url}</echo>
 
         <echo>File: ${package.jar}</echo>
-        <scp file="${package.jar}" todir="${scp.url}" password="${userpass}" trust="true"/>
+<!--        <scp file="${package.jar}" todir="${scp.url}" password="${userpass}" trust="true"/>-->
 
         <echo>File: ${package.jar.full}</echo>
-        <scp file="${package.jar.full}" todir="${scp.url}" password="${userpass}" trust="true"/>
+<!--        <scp file="${package.jar.full}" todir="${scp.url}" password="${userpass}" trust="true"/>-->
 
         <echo>File: ${package.deb}</echo>
-        <scp file="${package.deb}" todir="${scp.url}" password="${userpass}" trust="true"/>
+<!--        <scp file="${package.deb}" todir="${scp.url}" password="${userpass}" trust="true"/>-->
 
         <!--echo>File: ${package.exe}</echo>
         <scp file="${package.exe}" todir="${scp.url}" password="${userpass}" trust="true" /-->
