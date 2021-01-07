@@ -1,3 +1,6 @@
+
+============================== version 1.3.23 ==============================
+
 2020-09-20  Glazachev Andrey <aglazachev@users.sourceforge.net>
 	* Change: jira issue table: enter key now closes the dialog (with the selected row/issue)
 
