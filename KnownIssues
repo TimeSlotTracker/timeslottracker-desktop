@@ -6,3 +6,4 @@
 6. OpenJDK: shortcuts in task tree doesn't work after first stap/stop task
 7. On some OpenJDK/IcedTea version: DnD Tst deletes the timeslot from the original task but it never appears on the target
 8. OracleJRE 8: browse URL is not supported on linux
+9. desktop.open(file); does not work properly on some systems including Fedora XFCE, no reports will open after generating reports, but when you exit TimeSlotTracker all reports will open simultaneously. 
