@@ -17,7 +17,7 @@ Main points:
 
 Dependencies:
 -- ---------------
-* Java 1.8+
+* Java 1.8+ (currently does not compile on OpenJdk15 due to libraries removed in from jdk)
 * Ant 1.7+
 * Maven 3+
 * packages: debhelper, ant-optional, ant-contrib, libjsch-java
